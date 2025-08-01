@@ -16,6 +16,7 @@
     "@astrojs/cloudflare": "^12.5.4",
     "@astrojs/sitemap": "^3.4.1",
     "@floating-ui/dom": "^1.7.1",
+    "@jsarmyknife/native--animation": "^0.1.2-beta.0",
     "@jsarmyknife/native--cryptographic": "^0.1.4-beta.0",
     "@jsarmyknife/native--device": "^0.0.2-beta.0",
     "@jsarmyknife/native--dom": "^0.1.18-beta.0",
@@ -30,8 +31,8 @@
     "@supabase/supabase-js": "^2.50.2",
     "@tailwindcss/vite": "^4.0.17",
     "astro": "^5.9.1",
-    "preline": "^3.0.1",
     "lodash": "^4.17.21",
+    "preline": "^3.0.1",
     "tailwindcss": "^4.0.17",
     "typescript": "^5.8.3",
     "vanilla-calendar-pro": "^3.0.3"

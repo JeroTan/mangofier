@@ -77,29 +77,33 @@ import logo from "src/assets/logo.png";
   
 </nav>
 
-<aside class=" fixed bottom-0 sm:hidden block w-full z-20 bg-slate-900 border-t border-(--color-primary) shadow shadow-gray-100/25 px-2 py-2">
+<aside id="navbar-aside" class="fixed bottom-0 sm:hidden block w-full z-20 bg-slate-900 border-t border-(--color-primary) shadow shadow-gray-100/25 px-2 py-1">
+  <div id="open-navbar-aside" class="absolute right-full bg-slate-900 rounded-l border-l border-t border-b border-(--color-primary)">
+    <Icon name="prev" outClass="size-5" />
+  </div>
+
+
   <div class="flex w-full justify-around px-10">
-    <a href={t(`/`)}  class="btn-rounded btn-ghost flex-col gap-0">
+    <a href={t(`/`)}  class="btn btn-sm btn-ghost flex-col gap-0">
       <Icon name="search" outClass="size-7" />
       <span class="text-xs font-light">{`Explore`}</span>
     </a>
-    <a href={t(`/list`)} class="btn-rounded btn-ghost flex-col gap-0">
+    <a href={t(`/list`)} class="btn btn-sm btn-ghost flex-col gap-0">
       <Icon name="nineDots" outClass="size-7" />
       <span class="text-xs font-light">{`List`}</span>
     </a>
     <div class={`${isLogin ? "hidden" : ""}`}>
-      <a href={t("/authentication/login")} class="btn-rounded btn-ghost flex-col gap-0">
+      <a href={t("/authentication/login")} class="btn btn-sm btn-ghost flex-col gap-0">
         <Icon name="person" outClass="size-7" />
         <span class="text-xs font-light">{`Login`}</span>
       </a>
     </div>
     <div class={`${isLogin ? "" : "hidden"}`}>
-      <a href={t("/profile")} class="btn-rounded btn-ghost flex-col gap-0">
+      <a href={t("/profile")} class="btn btn-sm btn-ghost flex-col gap-0">
         <Icon name="person" outClass="size-7" />
         <span class="text-xs font-light">{`Profile`}</span>
       </a>
     </div>
-   
   </div>
 </aside>
 
@@ -116,6 +120,7 @@ import {DOMPopTransformer, E, specialComponentSelector} from "@jsarmyknife/nativ
 import { actions } from "astro:actions";
 import { pathTranslator } from "src/scripts/Link";
 import { logoutProcess } from "src/scripts/Authentication";
+import { AnimeTroupe } from "@jsarmyknife/native--animation";
 
 
 //---> Const
@@ -125,7 +130,16 @@ const languageButton = pageNavigationElement.querySelector("#change-language-but
 const languageSelectionElement = specialComponentSelector("astro-language-selection") as HTMLElement;
 const languageSelection = languageSelectionElement.querySelector("astro-language-selection") as HTMLElement;  
 const logOutButton = pageNavigationElement.querySelector("#log-out-button") as HTMLButtonElement;
-const t = pathTranslator()
+const openNavbarAside = document.getElementById("open-navbar-aside") as HTMLDivElement;
+const navbarAside = document.getElementById("navbar-aside") as HTMLDivElement;
+const animationOpenAside = new AnimeTroupe();
+const t = pathTranslator();
+
+//---> State
+
+
+
+//---> Function
 
 
 //---> LIstener
