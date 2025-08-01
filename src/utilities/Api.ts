@@ -1,17 +1,16 @@
 import { ActionError, type ActionErrorCode } from "astro:actions";
 import { HttpNativePlate } from "@jsarmyknife/native--http";
 import type { AstroCookies } from "astro";
-import { GetSessionKey } from "./AuthenticateUser";
 
 export function api(url: URL, cookies: AstroCookies, addons?:string){
-  let AUTH = GetSessionKey(cookies);
-  if(!AUTH){
-    AUTH = import.meta.env.SECRET_CRS_API_BASIC_AUTH_KEY;
-  }
-  const http= new HttpNativePlate(`${import.meta.env.PUBLIC_CRS_API_URL||url.origin}${addons || ""}`, {
+  // let AUTH = GetSessionKey(cookies);
+  // if(!AUTH){
+  //   AUTH = import.meta.env.SECRET_CRS_API_BASIC_AUTH_KEY;
+  // }
+  const http= new HttpNativePlate(`${import.meta.env.SECRET_MANGA_API_URL||url.origin}${addons || ""}`, {
     "Access-Control-Request-Headers":"Authorization, Content-Type",
     "Access-Control-Request-Method":"GET, POST, PUT, PATCH, DELETE, get, post, put, patch, delete",
-    "Authorization" :`Bearer ${AUTH}`,
+    // "Authorization" :`Bearer ${AUTH}`,
     "Content-Type":"application/json",
   });
   return http
