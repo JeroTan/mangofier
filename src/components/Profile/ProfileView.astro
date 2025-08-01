@@ -1,0 +1,73 @@
+---
+import { textTranslatorQ } from "src/i18/utils"
+import { GetCustomerInformationForce } from "src/utilities/AuthenticateUser"
+
+
+const { firstName, lastName, email } = GetCustomerInformationForce(Astro.cookies)
+const l = textTranslatorQ(Astro.url)
+---
+<astro-profile-view>
+  <section class="bg-slate-900 shadow-xl rounded-2xl p-10 my-10 space-y-6 border border-gray-200">
+    <!-- Profile Header -->
+    <div class="flex items-center flex-wrap gap-2 justify-between">
+      <div class="flex items-center gap-4">
+        <div class="p-2 bg-primary text-white rounded-full size-14 flex items-center justify-center text-xl font-bold">
+          {firstName[0]}{lastName[0]}
+        </div>
+        <div>
+          <h1 class="xl:text-2xl lg:text-xl md:text-lg text-base font-semibold">{firstName} {lastName}</h1>
+          <p class="text-sm text-gray-500">ManGoFier Account</p>
+        </div>
+      </div>
+      <div>
+        <button id="log-out-button" type="button" class="btn-rounded-outline btn-xs">
+          {`Log Out`}
+        </button>
+      </div>
+    </div>
+    
+
+    <!-- Contact Info -->
+    <div class="space-y-4 text-sm md:text-base">
+      <div>
+        <label class="block text-gray-500 mb-1">Email</label>
+        <p class="font-medium">{email}</p>
+      </div>
+
+  
+    </div>
+
+    <!-- Action -->
+    <div class="pt-4">
+      <button id="update-account" type="button" class="btn">
+        {`Update Account`}
+      </button>
+    </div>
+  </section>
+</astro-profile-view>
+
+
+
+<script>
+//--> Import
+
+import { DOMPopTransformer, E } from "@jsarmyknife/native--dom";
+import { Modal } from "@jsarmyknife/native--pop";
+import { logoutProcess } from "src/scripts/Authentication";
+import { ElementMaker } from "@jsarmyknife/native--dom";
+
+ElementMaker("astro-profile-view", (element) => {
+//---> Const
+const buttonAccount = element.querySelector("#update-account") as HTMLButtonElement;
+const logOutButton = element.querySelector("#log-out-button") as HTMLButtonElement;
+
+buttonAccount.addEventListener("click", () => {
+  const pop = new Modal(DOMPopTransformer);
+  pop.type("info").title("Update Account").message("To update your account, please contact our support team via email at <a class='font-semibold' href='mailto:sample@gmail.com'>sample@gmail.com</a> or call us at <a class='font-semibold' href='tel:+1234567890'>+1234567890</a>.").button("Close", false, true, true).run();
+});
+
+logOutButton.addEventListener("click", async () => {
+  await logoutProcess();
+});
+}, true);
+</script>

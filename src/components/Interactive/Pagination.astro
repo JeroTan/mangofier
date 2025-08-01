@@ -1,0 +1,183 @@
+---
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  id?: string,
+  currentPage?: number,
+  totalPages?: number,
+}
+const {
+  id = "astro-pagination",
+  currentPage = 1,
+  totalPages = 1
+} = Astro.props;
+---
+
+<astro-pagination data-current-page={currentPage} data-total-pages={totalPages} id={id}>
+  <main class="flex justify-center w-full gap-1">
+
+    <div id="prev-page">
+      <button class="btn-rounded btn-ghost aspect-square h-10 p-1" disabled={currentPage <= 1}>
+        <Icon name="prev" outClass="size-4" />  
+      </button>
+    </div>
+
+    <div id="first-page" class={`${currentPage <= 1 ? 'hidden' : ''}`}>
+      <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+        1
+      </button>
+    </div>
+
+    <div id="prev-ellipsis" class={`${currentPage <= 3 ? 'hidden' : ''}`}>
+      <button class="rounded-full aspect-square h-10 p-1">
+        ...
+      </button>
+    </div>
+
+    <div id="prev-pages-container" class={`${currentPage <= 2 ? 'hidden' : ''}`}>
+      <ul class="flex gap-1 mr-1">
+        <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+          {currentPage - 1}
+        </button>
+      </ul>
+    </div>
+    
+    <div id="current-page">
+      <button class="rounded-full bg-gray-700 text-white aspect-square h-10 p-1">
+        {currentPage}
+      </button>
+    </div>
+
+    <div id="next-pages-container" class={`${totalPages <= currentPage+1 ? 'hidden' : ''}`}>
+      <ul class="flex gap-1 ml-1">
+        <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+          {currentPage + 1}
+        </button>
+      </ul>
+    </div>
+    
+    <div id="next-ellipsis" class={`${totalPages <= currentPage+2 ? 'hidden' : ''}`}>
+      <button class="rounded-full aspect-square h-10 p-1">
+        ...
+      </button>
+    </div>
+
+    <div id="last-page" class={`${totalPages <= currentPage ? 'hidden' : ''}`}>
+      <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+        {totalPages}
+      </button>
+    </div>
+
+    <div id="next-page">
+      <button class="btn-rounded btn-ghost aspect-square h-10 p-1" disabled={currentPage >= totalPages}>
+        <Icon name="next" outClass="size-4" />  
+      </button>
+    </div>
+
+  </main>
+</astro-pagination>
+<script>
+//---> Import
+import { ElementMaker } from '@jsarmyknife/native--dom';
+import { State } from '@jsarmyknife/native--storage';
+import type { PAGINATION_PROPS } from './structure';
+ElementMaker<PAGINATION_PROPS>("astro-pagination", (element)=>{
+//---> Const
+//Elements
+const prevPage = element.querySelector("#prev-page") as HTMLDivElement;
+const firstPage = element.querySelector("#first-page") as HTMLDivElement;
+const prevEllipsis = element.querySelector("#prev-ellipsis") as HTMLDivElement;
+const prevPagesContainer = element.querySelector("#prev-pages-container") as HTMLDivElement;
+const currentPage = element.querySelector("#current-page") as HTMLDivElement;
+const nextPagesContainer = element.querySelector("#next-pages-container") as HTMLDivElement;
+const nextEllipsis = element.querySelector("#next-ellipsis") as HTMLDivElement;
+const lastPage = element.querySelector("#last-page") as HTMLDivElement;
+const nextPage = element.querySelector("#next-page") as HTMLDivElement;
+//Data
+const currentPageNumber = parseInt(element.dataset.currentPage || "1");
+const totalPages = parseInt(element.dataset.totalPages || "1");
+
+//---> State
+const stateManager = new State();
+element.props.currentPage = stateManager.newState<number>(currentPageNumber);
+element.props.totalPages = stateManager.newState<number>(totalPages);
+const {currentPage: page, totalPages: totalPage} = element.props;
+const selfPage = stateManager.newState<number>(currentPageNumber);
+
+
+//---> On Load
+updatePagesContainer();
+
+//---> Function
+function pageUpdateHardPageReset(page: number) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("page", page.toString());
+  location.href = url.toString();
+}
+function updatePagination(currentPageNumber: number, totalPages: number) {
+  // Update visibility of elements based on current page
+  firstPage.classList.toggle('hidden', currentPageNumber <= 1);
+  prevEllipsis.classList.toggle('hidden', currentPageNumber <= 3);
+  prevPagesContainer.classList.toggle('hidden', currentPageNumber <= 2);
+  nextPagesContainer.classList.toggle('hidden', totalPages <= currentPageNumber + 1);
+  nextEllipsis.classList.toggle('hidden', totalPages <= currentPageNumber + 2);
+  lastPage.classList.toggle('hidden', totalPages <= currentPageNumber);
+  prevPage.querySelector('button')?.setAttribute('disabled', String(currentPageNumber <= 1));
+  nextPage.querySelector('button')?.setAttribute('disabled', String(currentPageNumber >= totalPages));
+
+  // Update the current page display
+  (currentPage.querySelector('button') as HTMLButtonElement).textContent = String(currentPageNumber);
+}
+
+function updatePagesContainer(){
+  Array.from(prevPagesContainer.querySelectorAll('button')).forEach((btn, index) => {
+    const newPage = currentPageNumber - 1 - index;
+    btn.textContent = String(newPage);
+    btn.addEventListener("click", () => {
+      page.set(newPage);
+      selfPage.set(newPage);
+    });
+  });
+  Array.from(nextPagesContainer.querySelectorAll('button')).forEach((btn, index) => {
+    const newPage = currentPageNumber + 1 + index;
+    btn.textContent = String(newPage);
+    btn.addEventListener("click", () => {
+      page.set(newPage);
+      selfPage.set(newPage);
+    });
+  });
+}
+
+
+//---> Event Listeners
+prevPage.addEventListener("click", () => {
+  page.update((prev) => prev > 1 ? prev - 1 : 1);
+  selfPage.update((prev) => prev > 1 ? prev - 1 : 1);
+});
+
+firstPage.addEventListener("click", () => {
+  page.set(1);
+  selfPage.set(1);
+});
+
+nextPage.addEventListener("click", () => {
+  page.update((prev) => prev < totalPages ? prev + 1 : totalPages);
+  selfPage.update((prev) => prev < totalPages ? prev + 1 : totalPages);
+});
+
+lastPage.addEventListener("click", () => {
+  page.set(totalPages);
+  selfPage.set(totalPages);
+});
+
+page.subscribe((newPage) => {
+  updatePagination(newPage, totalPage.get());
+});
+selfPage.subscribe((newPage) => {
+  pageUpdateHardPageReset(newPage);
+});
+
+
+
+}, true);
+</script>

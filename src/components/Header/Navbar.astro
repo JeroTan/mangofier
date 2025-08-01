@@ -1,0 +1,138 @@
+---
+import Icon from "@components/Icon.astro";
+import LanguageSelection from "@components/Language/LanguageSelection.astro";
+import Dropdown from "@components/Overlay/Dropdown.astro";
+import { Image } from "astro:assets";
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
+import { IsLogin } from "src/utilities/AuthenticateUser";
+
+
+interface Props {
+  hideWhenSmall?: boolean,
+}
+const { hideWhenSmall = false } = Astro.props;
+
+//i18
+const t = pathTranslatorQ(Astro.url);
+const l = textTranslatorQ(Astro.url);
+const isLogin = await IsLogin(Astro.cookies, Astro.url);
+import logo from "src/assets/logo.png";
+---
+
+
+<nav 
+  id="page-navigation" 
+  class={`${hideWhenSmall ? "sm:block hidden" : ""} sticky top-0 z-20 bg-slate-900 border-b border-(--color-primary) shadow-(--color-primary)`}
+  >
+  <div class="md:py-4 py-2 sm:min-h-16 min-h-14 w-full">
+    <div class="container flex flex-wrap items-center justify-items-center mx-auto align-middle ">
+      <a href={t("/")} class="relative sm:flex hidden items-center mr-auto">
+        <Image src={logo} alt="ManGoFier Logo" width={120} height={120} />
+      </a>
+
+      <section class="sm:flex hidden gap-3">
+
+        <button id="change-language-button" class="btn-outline btn-outline-primary aspect-square p-3">
+          <Icon name="globe" outClass="size-4" />
+        </button>
+
+        <Dropdown
+          id="navbar-trigger"
+          buttonClass=" sm:block hidden btn-outline btn-outline-primary aspect-square p-2.5"
+        >
+          <Fragment slot="button">
+            <Icon name="hamburgerMenu" outClass="size-5 " />
+          </Fragment>
+          <div class="w-full rounded-xl bg-slate-900 shadow-lg overflow-hidden p-2">
+            <a href={`/`} class="btn btn-ghost w-full text-start justify-start">
+              {`Home`}
+            </a>
+            <div class={`${isLogin ? "hidden" : ""}`}>
+              <a href={t("/authentication/login")} class="btn btn-ghost w-full text-start justify-start">
+                {`Login`}
+              </a>
+              <a href={t("/authentication/register")} class="btn btn-ghost w-full text-start justify-start">
+                {`Register`}
+              </a>
+            </div>
+            <div class={`${isLogin ? "" : "hidden"}`}>
+              <a href={t("/profile")} class="btn btn-ghost w-full text-start justify-start">
+                {`Profile`}
+              </a>
+              <a href={t("/reservation")} class="btn btn-ghost w-full text-start justify-start">
+                {`Reservations`}
+              </a>
+              <button id="log-out-button"  class="btn btn-ghost w-full text-start justify-start">
+                {`Logout`}
+              </button>
+            </div>
+          </div>
+        </Dropdown>
+      </section>
+    </div>
+    <slot name="additional-elements">
+
+    </slot>
+  </div>
+  
+</nav>
+
+<aside class=" fixed bottom-0 sm:hidden block w-full z-20 bg-slate-900 border-t border-(--color-primary) shadow shadow-gray-100/25 px-2 py-2">
+  <div class="flex w-full justify-around px-10">
+    <a href={t(`/`)}  class="btn-rounded btn-ghost flex-col gap-0">
+      <Icon name="search" outClass="size-7" />
+      <span class="text-xs font-light">{`Explore`}</span>
+    </a>
+    <a href={t(`/list`)} class="btn-rounded btn-ghost flex-col gap-0">
+      <Icon name="nineDots" outClass="size-7" />
+      <span class="text-xs font-light">{`List`}</span>
+    </a>
+    <div class={`${isLogin ? "hidden" : ""}`}>
+      <a href={t("/authentication/login")} class="btn-rounded btn-ghost flex-col gap-0">
+        <Icon name="person" outClass="size-7" />
+        <span class="text-xs font-light">{`Login`}</span>
+      </a>
+    </div>
+    <div class={`${isLogin ? "" : "hidden"}`}>
+      <a href={t("/profile")} class="btn-rounded btn-ghost flex-col gap-0">
+        <Icon name="person" outClass="size-7" />
+        <span class="text-xs font-light">{`Profile`}</span>
+      </a>
+    </div>
+   
+  </div>
+</aside>
+
+{/** Other Components */}
+<section class="hidden">
+  <LanguageSelection />
+</section>
+
+
+<script>
+//---> Import
+import {Modal} from "@jsarmyknife/native--pop";
+import {DOMPopTransformer, E, specialComponentSelector} from "@jsarmyknife/native--dom";
+import { actions } from "astro:actions";
+import { pathTranslator } from "src/scripts/Link";
+import { logoutProcess } from "src/scripts/Authentication";
+
+
+//---> Const
+const changeLangPop = new Modal(DOMPopTransformer);
+const pageNavigationElement = document.getElementById("page-navigation") as HTMLElement;
+const languageButton = pageNavigationElement.querySelector("#change-language-button") as HTMLButtonElement;
+const languageSelectionElement = specialComponentSelector("astro-language-selection") as HTMLElement;
+const languageSelection = languageSelectionElement.querySelector("astro-language-selection") as HTMLElement;  
+const logOutButton = pageNavigationElement.querySelector("#log-out-button") as HTMLButtonElement;
+const t = pathTranslator()
+
+
+//---> LIstener
+languageButton.addEventListener("click", () => {
+  changeLangPop.type("custom").noIcon().noTitle().custom( E("div", {className: "px-10 pb-10"}, languageSelectionElement) ).width(`1000px`).button(false, false, true, true).run();
+});
+logOutButton.addEventListener("click", async () => {
+  await logoutProcess();
+});
+</script>

@@ -1,0 +1,32 @@
+---
+interface Props{
+  title?: string,
+  description?: string,
+  author?: string,
+  authorHandle?: string,
+  baseUrl?: string,
+  pathUrl?: string,
+  keywords?: (string|number)[],
+  published?: string,
+
+}
+
+const {
+  title ="Nana Pool Villa",
+  description = "Nana Pool Villa is a luxurious retreat offering private pool villas in the heart of the city. Experience unparalleled comfort and relaxation with top-notch amenities and personalized service.",
+  author = "Hassadee",
+  authorHandle = "@hassadee",
+  baseUrl =  Astro.url.origin,
+  pathUrl = "/newsroom/author",
+  keywords = [],
+  published = "2025-04-01",
+} = Astro.props;
+---
+
+<meta name="pagetitle" content={title}>
+<meta name="description" content={description} />
+<meta name="theme-color" content="#fff">
+<meta name="author" content={author}>
+{authorHandle ? <meta property="article:author" content={`${baseUrl}${pathUrl}/${authorHandle}`}> :""}
+<meta name="keywords" content={keywords.join(", ")}>
+{published ? <meta property="article:published_time" content={new Date(published).toISOString()}>:""}

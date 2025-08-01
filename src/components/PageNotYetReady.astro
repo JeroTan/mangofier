@@ -1,0 +1,21 @@
+---
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils"
+
+
+const t = pathTranslatorQ(Astro.url);
+const l = textTranslatorQ(Astro.url);
+---
+
+<main class="mt-30 flex items-center justify-center  px-4">
+  <div class="text-center space-y-4">
+    <h1 class="h3">{`Page Not Ready`}</h1>
+    <p class="text-gray-500">
+      {`This page is not yet ready. Please check back later.`}
+    </p>
+    <div class="pt-4">
+      <a href={t("/")} class="btn btn-primary">
+        {`Go Back to Home`}
+      </a>
+    </div>
+  </div>
+</main>

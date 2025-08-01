@@ -1,0 +1,367 @@
+---
+import { DateNavigator, transformDate } from '@jsarmyknife/native--math';
+import DatePicker from './DatePicker.astro';
+import TimePicker from './TimePicker.astro';
+import type { Options } from 'vanilla-calendar-pro';
+
+interface Props {
+  min?: Date|undefined,
+  max?: Date|undefined,
+  minTimeBetween?: string,
+  maxTimeBetween?: string,
+  class?:string,
+  required?:boolean,
+  id?:string,
+  config?:{
+    date?:Options,
+    time?:Options,
+  },
+  [key:string]: any,
+}
+
+const { 
+  class:className="", 
+  min = new DateNavigator().setTimezone("Asia/Manila"), 
+  max = new DateNavigator().setTimezone("Asia/Manila").nextDay(31), 
+  minTimeBetween = "00:00",
+  maxTimeBetween = "23:59",
+  required = false,
+  id = "date-time-picker-element",
+  config= {date:{}, time:{}},
+  ...attributes 
+} = Astro.props;
+---
+
+<astro-date-time-picker 
+  id={id}
+  data-min={min ? `${transformDate(min, "iso")}` : ""} 
+  data-max={max ? `${transformDate(max, "iso")}` : ""} 
+  data-min-time-between={minTimeBetween} 
+  data-max-time-between={maxTimeBetween} 
+  {...attributes}
+>
+  <input type="text" id={`${id}-input`} aria-label="date-time-picker-input" class="hidden" required={required} />
+  <div class={`flex gap-1 w-full ${className}`}>
+    <DatePicker id="date-picker-top" class='basis-full' config={config.date} />
+    <TimePicker id="time-picker-top" class='basis-48' config={config.time} />
+  </div>
+</astro-date-time-picker>
+
+<script>
+//---> Imports
+import { ElementMaker, specialComponentSelector } from "@jsarmyknife/native--dom";
+import { DateNavigator, padNumber, transformDate } from "@jsarmyknife/native--math";
+import { State } from "@jsarmyknife/native--storage";
+import type { DATE_TIME_PICKER_PROPS, ELEMENT_DATE_PICKER, ELEMENT_TIME_PICKER } from "./structure";
+
+
+ElementMaker<DATE_TIME_PICKER_PROPS>("astro-date-time-picker", (element)=>{
+//---> Constants
+const input = element.querySelector("[aria-label='date-time-picker-input']") as HTMLInputElement;
+const datePicker = specialComponentSelector<ELEMENT_DATE_PICKER>("#date-picker-top", element);
+const timePicker = specialComponentSelector<ELEMENT_TIME_PICKER>("#time-picker-top", element);
+const stateManager = new State(); 
+datePicker.props.displayConverter.set(displayDateTextHumanize);
+datePicker.props.picker.set({
+});
+timePicker.props.picker.set({
+  timeStepMinute:15
+});
+
+
+//---> States
+const minState = stateManager.addState<Date|null|undefined>("min", element.dataset.min ? new Date(element.dataset.min) : new DateNavigator().setTimezone("Asia/Manila"));
+const maxState = stateManager.addState<Date|null|undefined>("max", element.dataset.max ? new Date(element.dataset.max) : new DateNavigator().setTimezone("Asia/Manila").nextDay(31));
+const minTimeBetweenState = stateManager.addState<string>("minTimeBetween", element.dataset.minTimeBetween || "00:00");
+const maxTimeBetweenState = stateManager.addState<string>("maxTimeBetween", element.dataset.maxTimeBetween || "23:59");
+element.props.datePicker = datePicker.props.picker;
+element.props.timePicker = timePicker.props.picker;
+element.props.min = minState;
+element.props.max = maxState;
+element.props.minTimeBetween = minTimeBetweenState;
+element.props.maxTimeBetween = maxTimeBetweenState;
+element.props.timeInput = timePicker.props.input;
+element.props.dateInput = datePicker.props.input;
+element.props.value = stateManager.addState<string>("value", "");
+
+
+//---> On Load
+updateMinMaxDate();
+updateMinMaxTime();
+
+
+//---> Functionality
+//Update min and max Date if there's any
+function updateMinMaxDate(){
+  const min = minState.get();
+  if(min){
+    element.props.datePicker.set({
+      dateMin: min,
+      displayDateMin: min,
+    });
+  };
+  const max = maxState.get();
+  if(max){
+    element.props.datePicker.set({
+      dateMax: max,
+      displayDateMax: max,
+    });
+  };
+ 
+}
+//Update the min and max date but also check if the current date is below or above the min and max
+function updateMinMaxTime(){
+  if(!datePicker.props.value.get()) return;
+  const currentSelectedDate = new DateNavigator(datePicker.props.value.get());
+
+  const min = minState.get();
+  if(min){
+    const { hours, minutes } = splitTimeString(minTimeBetweenState.get());
+    if(transformDate(min, "yyyy-mm-dd") == transformDate(currentSelectedDate, "yyyy-mm-dd")){
+      if(min.getHours() < hours || (min.getHours() == hours && min.getMinutes() < minutes)){
+        const newMinTime = new Date(currentSelectedDate);
+        newMinTime.setMinutes(minutes);
+        newMinTime.setHours(hours);
+        timePicker.props.minTime.set(dateNowTime(newMinTime));
+      }
+      else if(min.getHours() != currentSelectedDate.getHours() || min.getMinutes() != currentSelectedDate.getMinutes()){
+        timePicker.props.value.set(dateNowTime(min));
+        timePicker.props.minTime.set(dateNowTime(min));
+      }
+    }else{
+      if(min.getHours() != hours || min.getMinutes() != minutes){
+        const newMinTime = new Date(currentSelectedDate);
+        newMinTime.setMinutes(minutes);
+        newMinTime.setHours(hours);
+        timePicker.props.minTime.set(dateNowTime(newMinTime));
+      }
+    }
+  }
+
+  const max = maxState.get();
+  if(max){
+    const { hours, minutes } = splitTimeString(maxTimeBetweenState.get());
+    if(transformDate(max, "yyyy-mm-dd") == transformDate(currentSelectedDate, "yyyy-mm-dd")){
+      if(max.getHours() != currentSelectedDate.getHours() || max.getMinutes() != currentSelectedDate.getMinutes()){
+        timePicker.props.value.set(dateNowTime(max));
+        timePicker.props.maxTime.set(dateNowTime(max));
+      }
+    }else{
+      if(max.getHours() != hours || max.getMinutes() != minutes){
+        const newMaxTime = new DateNavigator(currentSelectedDate);
+        newMaxTime.setMinutes(minutes);
+        newMaxTime.setHours(hours);
+        timePicker.props.maxTime.set(dateNowTime(newMaxTime, 1));
+      }
+    }
+  }
+
+}
+
+function updateMinMaxHourMinutesBasedOnTime(){
+  const currentTime = splitTimeString(timePicker.props.value.get());
+  const thisMinBetween = element.props.minTimeBetween.get(); //Ex. 05:30 //This is 24 hours format
+  const thisMaxBetween = element.props.maxTimeBetween.get();
+  const oldMinTime = timePicker.props.minTime.get();
+  const oldMaxTime = timePicker.props.maxTime.get();
+
+  let minTimeHourChange:null|number = 0;
+  let maxTimeHourChange:null|number = 23;
+  let minTimeMinuteChange:null|number = 0;
+  let maxTimeMinuteChange:null|number = 59;
+
+
+  /**
+  * We Go with prioritization of who will have the power to change the current min and max time
+  * The lowest is the highest priority
+  */
+
+  //1. Using the minBetween and maxBetween check if the current time is within the range
+  if(thisMinBetween){
+    const { hours: minH, minutes: minM } = splitTimeString(thisMinBetween);
+    if(currentTime.hours === minH ){ //If matched then change the min time to be struct
+      minTimeHourChange = minH;
+      minTimeMinuteChange = minM;
+    }else{
+      //If not matched then we can set the min time to be the minH:00
+      minTimeHourChange = minH;
+      minTimeMinuteChange = 0;
+    }
+  }
+  if(thisMaxBetween){
+    const { hours: maxH, minutes: maxM } = splitTimeString(thisMaxBetween);
+    if(currentTime.hours === maxH ){ //If matched then change the max time to be struct
+      maxTimeHourChange = maxH;
+      maxTimeMinuteChange = maxM;
+    }else{
+      //If not matched then we can set the max time to be the maxH:59
+      maxTimeHourChange = maxH;
+      maxTimeMinuteChange = 59;
+    }
+  }
+
+  //2. Check whether the minDate and maxDate. like if the it is the starting day of minDate that will take over the minTime
+  {
+    const currentDate = datePicker.props.value.get();
+    const generalMinDate = element.props.min.get();
+    if(generalMinDate && currentDate && transformDate(generalMinDate, "yyyy-mm-dd") == currentDate){
+      const { hours: minH, minutes: minM } = splitTimeString(dateNowTime(generalMinDate));  
+      minTimeHourChange = minH;
+      minTimeMinuteChange = minM;
+    }
+    const generalMaxDate = element.props.max.get();
+    if(generalMaxDate && currentDate && transformDate(generalMaxDate, "yyyy-mm-dd") == currentDate){
+      const { hours: maxH, minutes: maxM } = splitTimeString(dateNowTime(generalMaxDate));  
+      maxTimeHourChange = maxH;
+      maxTimeMinuteChange = maxM;
+    }
+  }
+
+  //Final - Apply the changes if there are changes
+  if(minTimeHourChange !== null && minTimeMinuteChange !== null){
+    const newMinTime = `${padNumber(minTimeHourChange, 2)}:${padNumber(minTimeMinuteChange, 2)}`;
+    if(oldMinTime !== newMinTime){
+      timePicker.props.minTime.set(newMinTime);
+      checkIfTimeIsOutsideMin(newMinTime);
+    }
+  }
+  if(maxTimeHourChange !== null && maxTimeMinuteChange !== null){
+    const newMaxTime = `${padNumber(maxTimeHourChange, 2)}:${padNumber(maxTimeMinuteChange, 2)}`;
+    if(oldMaxTime !== newMaxTime){
+      timePicker.props.maxTime.set(newMaxTime);
+      checkIfTimeIsOutsideMax(newMaxTime);
+    }
+  }
+
+}
+
+function checkIfTimeIsOutsideMin(minTime:string){
+  const currentTime = timePicker.props.value.get()
+  if(minTime && currentTime < minTime){
+    timePicker.props.value.set(minTime);
+    timePicker.props.input.innerText = minTime; //Update the input value
+    timePicker.props.picker.selectedTime = minTime; //Update the selected time in the picker
+  }
+}
+
+function checkIfTimeIsOutsideMax(maxTime:string){
+  const currentTime = timePicker.props.value.get();
+  if(maxTime && currentTime > maxTime){
+ 
+    timePicker.props.value.set(maxTime);
+    timePicker.props.input.innerText = maxTime; //Update the input value
+    timePicker.props.picker.selectedTime = maxTime; //Update the selected time in the picker
+  }
+}
+
+
+
+
+function dateNowTime(date:Date = new Date(), timeStep:number = 15){
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const gap = ((minutes + timeStep) % timeStep);
+  minutes = minutes + (gap != 0 ? timeStep-gap : 0);
+  if(minutes >= 60){
+    hours = hours + 1;
+    minutes = minutes - 60;
+  }
+  date.setMinutes(minutes);
+  date.setHours(hours);
+  return `${padNumber(date.getHours(), 2)}:${padNumber(date.getMinutes(), 2)}`;
+}
+
+function dateNowDate(date:Date = new Date()){
+  return transformDate(date,"yyyy-mm-dd");
+}
+
+function displayDateTextHumanize(date:Date|string|number){
+  if(!date) return "";
+  const dateObj = new Date(date);
+  return transformDate(dateObj, "mnt, dd yyyy");
+}
+
+function checkIfBelowMinDate(value?:string ){
+  value = value || element.props.value.get();
+  //Check if below or above min and max
+  const min = minState.get();
+  if(min && new Date(value).getTime() < min.getTime()){
+    value = transformDate(`${dateNowDate(min)}T${dateNowTime(min)}`, "iso");
+    element.props.value.set(value, true);
+  }
+  return value;
+}
+
+function checkIfAboveMaxDate(value?:string){
+  value = value || element.props.value.get();
+  //Check if below or above min and max
+  const max = maxState.get();
+  if(max && new Date(value).getTime() > max.getTime()){
+    value = transformDate(`${dateNowDate(max)}T${dateNowTime(max)}`, "iso");
+    element.props.value.set(value, true);
+  }
+  return value;
+}
+
+function updateDateTimeBaseOnValue(){
+  const value = element.props.value.get();
+  if(!value) return;
+  const oldDateValue = datePicker.props.value.get();
+  const oldTimeValue = timePicker.props.value.get();
+  if(oldDateValue && oldTimeValue && value == `${oldDateValue}T${oldTimeValue}`) return;
+
+  //Prepare the date value
+  const dateTime = new Date(checkIfBelowMinDate(checkIfAboveMaxDate(value)));
+  datePicker.props.value.set(transformDate(dateTime, "yyyy-mm-dd"));
+  timePicker.props.value.set(dateNowTime(dateTime));
+}
+
+function updateValueBaseOnDateTime(){
+  const dateValue = datePicker.props.value.get();
+  const timeValue = timePicker.props.value.get();
+  if(!dateValue || !timeValue) return;
+  const oldValue = element.props.value.get();
+  if(oldValue && oldValue == `${dateValue}T${timeValue}`) return;
+  const value = transformDate(`${dateValue}T${timeValue}`, "iso");
+  element.props.value.set(value);
+}
+
+function splitTimeString(timeString:string){
+  const [hours, minutes] = timeString.split(":").map(Number);
+  return { hours:Number(hours), minutes:Number(minutes) };
+}
+
+//---> Event Listeners
+element.props.value.subscribe((newVal)=>{
+  if(!newVal) return;
+  updateDateTimeBaseOnValue();
+  input.value = newVal;
+});
+
+datePicker.props.value.subscribe((newVal)=>{
+  if(!newVal) return;
+  updateMinMaxTime();
+  updateValueBaseOnDateTime();
+});
+timePicker.props.value.subscribe((newVal)=>{
+  if(!newVal) return;
+  updateMinMaxHourMinutesBasedOnTime();
+  updateValueBaseOnDateTime();
+});
+
+minState.subscribe((newVal)=>{
+  if(!newVal) return;
+  updateMinMaxDate();
+  updateMinMaxTime();
+});
+
+maxState.subscribe((newVal)=>{
+  if(!newVal) return;
+  updateMinMaxDate();
+  updateMinMaxTime();
+});
+
+
+
+}, true);
+</script>

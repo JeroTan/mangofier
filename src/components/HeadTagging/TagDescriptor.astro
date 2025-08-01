@@ -1,0 +1,96 @@
+---
+import type { PAGE_TYPE } from '../../structure/Page';
+
+const brandName: string = "Nana Pool Villa";
+const companyName: string = "Hassadee";
+const thumbnailURL: string = "https://nanapoolvilla.com/nana-pool-villa.png";
+const logoURL: string = "https://nanapoolvilla.com/nana-pool-villa.png";
+const websiteURL: string = "https://nanapoolvilla.com/";
+const websiteDefaultDescription: string = "Nana Pool Villa is a luxurious retreat offering private pool villas in the heart of the city. Experience unparalleled comfort and relaxation with top-notch amenities and personalized service.";
+
+interface Props{
+  type?:PAGE_TYPE,
+  title?:string,
+  description?:string,
+  published?:string,
+  keywords?:Array<string|number>,
+  thumbnail?:string,
+  author?:string,
+  authorHandle?:string
+  faqData?:Array<{
+    id:string,
+    question:string,
+    answer:string,
+  }>,
+};
+
+const {
+  type = "Organization",
+  title = brandName,
+  description = websiteDefaultDescription,
+  published = new Date("2025-04-01").toISOString(),
+  keywords = [],
+  thumbnail = thumbnailURL,
+  author = companyName,
+  faqData = [],
+} = Astro.props;
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify((()=>{
+  const data:{[key:string|number]:unknown} = {
+    "@context": "https://schema.org",
+    "@type": type,
+    "name": brandName,
+    "url": websiteURL,
+    "logo": logoURL,
+  };
+
+  switch (type) {
+    case "BlogPosting":{
+      data["@id"] = Astro.url.href+"/#BlogPosting";
+      data["mainEntityOfPage"] = Astro.url.href;
+      data["name"] = title;
+      data["description"] = description;
+      data["datePublished"] = published;
+      data["datePublished"] = published;
+      data["author"] = {
+        "@type":"Person",
+        // "@id":Astro.url.origin+"/author/"+refineDescriptor.authorHandle+"/#Person",
+        "name":author,
+        // "url":Astro.url.origin+"/author/"+authorHandle,
+      };
+      data["image"] = {
+        "@type":"ImagaObject",
+        "@id": thumbnail,
+        "url": thumbnail,
+      };
+      data["isPartOf"] = {
+        "@type": "Blog",
+        "@id": Astro.url.origin+"/newsroom",
+        "name": `${brandName} Newsroom`,
+        "publisher":{
+          "@type": "Organization",
+          "@id": Astro.url.origin,
+          "name": brandName,
+        }
+      }
+      if(keywords && Array.isArray(keywords)){
+        data["keywords"] = keywords;
+      }
+    }
+    break;
+    case "FAQPage":{
+      data["mainEntity"] = faqData.map((faqData)=>{
+        return {
+          "@type": "Question",
+          "name": faqData.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faqData.answer,
+          }
+        }
+      });
+    }
+  }
+  return data;
+})())} />

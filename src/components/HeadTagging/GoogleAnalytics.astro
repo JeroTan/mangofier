@@ -1,0 +1,30 @@
+---
+const AllowedCookiesData = Astro.cookies.has("NPV_ALLOW_COOKIES");
+let isAllowed = true;
+if(AllowedCookiesData){
+  if(Astro.cookies.get("NPV_ALLOW_COOKIES")!.value == "true"){
+    isAllowed = true;
+  }else{
+    isAllowed = false;
+  }
+}
+isAllowed;
+---
+<!-- Google tag (gtag.js) -->
+<!-- <script id="google-tag-1" is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-BCKSBGEBHK"></script>
+<script id="google-tag-2" is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BCKSBGEBHK');
+</script>
+
+<script is:inline define:vars={{isAllowed}}>
+  addEventListener("load", ()=>{
+    if(isAllowed == false){
+      document.getElementById("google-tag-1").remove();
+      document.getElementById("google-tag-2").remove();
+    }
+  })
+</script> -->

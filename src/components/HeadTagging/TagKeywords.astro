@@ -1,0 +1,31 @@
+---
+interface Props {
+  keywords?: (string|number)[]
+}
+const commonKeyword = [
+  "Pool Villa",
+  "Private Pool Villa",
+  "Nana Pool Villa",
+  "Luxury Villa",
+  "Villa with Pool",
+  "Luxury Accommodation",
+  "Private Villa",
+  "Luxury Retreat",
+  "Nana Hotel",
+  "Nana Hotel Bangkok",
+  "Nana Hotel Bangkok Pool Villa",
+  "Nana Hotel Bangkok Luxury Villa",
+  "Nana Hotel Bangkok Private Pool Villa",
+  "Nana Hotel Bangkok Luxury Accommodation",
+  "Nana Hotel Bangkok Private Villa",
+  "Nana Hotel Bangkok Luxury Retreat",
+  "Nana Hotel Bangkok Luxury",
+  "Nana Hotel Bangkok",
+  "Nana Hotel",
+  "Nana Hotel Bangkok",
+];
+
+const { keywords } = Astro.props;
+
+---
+<meta name="keywords" content={`${keywords && keywords.length > 0 ? keywords.join(",") + "," : ""}${commonKeyword.join(",")}`} />

@@ -1,0 +1,101 @@
+---
+import Icon from "@components/Icon.astro";
+
+
+
+---
+<astro-screen-show class="relative">
+  <dialog id="screen-show" class="fixed top-0 left-0 h-full w-full bg-white z-[60] overflow-y-auto" style="overscroll-behavior: contain;">
+    <main class="md:p-5 p-2">
+      {/* Header Navigation */}
+      <section class="header flex justify-between mb-2">
+        <div id="left-navigation" class="flex gap-2">
+          <button id="back-button" type="button" class="btn btn-ghost">
+            <Icon name="prev" outClass="size-5" />
+          </button>
+        </div>
+        <div id="right-navigation" class="flex gap-2">
+
+        </div>
+      </section>
+
+      {/* Body */}
+      <section id="screen-show-body">
+        {/* This is where the content comes in */}
+      </section>
+    </main>
+  </dialog>
+</astro-screen-show>
+
+<script>
+//---> Import
+// import { E, ElementMaker } from "@jsarmyknife/native--dom";
+// import type { SCREEN_SHOW_PROPS } from "./structure";
+// import { State } from "@jsarmyknife/native--storage";
+
+// ElementMaker<SCREEN_SHOW_PROPS>("astro-screen-show", element => {
+// //---> Const
+// const screenShowElement = element.querySelector("#screen-show") as HTMLDialogElement;
+// const leftNavigation = element.querySelector("#left-navigation") as HTMLDivElement;
+// const backButton = element.querySelector("#back-button") as HTMLButtonElement;
+// const rightNavigation = element.querySelector("#right-navigation") as HTMLDivElement;
+// const screenShowBody = element.querySelector("#screen-show-body") as HTMLDivElement;
+
+// //---> State
+// const s = new State();
+// element.props.switch = s.addState("screenShowSwitch",!!screenShowElement.open);
+// element.props.content = s.addState<HTMLElement|Node>("ScreenShowContent",screenShowBody.children[0] || document.createElement("div"));
+// let temporaryHotSwapBody = getAllBodyExceptThisElement();
+
+// //---> On Load
+// if(element.props.switch.get()){
+//   swapToClearBody();
+// }
+
+
+// //---> Function
+// function getAllBodyExceptThisElement(): HTMLElement[] | null {
+//   const bodyChildren = Array.from(document.body.children)
+//     .filter(child =>
+//       child !== element
+//       // child.tagName.toLowerCase() !== 'script' &&
+//       // child.tagName.toLowerCase() !== 'style'
+//     ) as HTMLElement[];
+//   return bodyChildren.length > 0 ? bodyChildren : null;
+// }
+// function swapToClearBody() {
+//   if(temporaryHotSwapBody == null) return;
+//   E("body", {}, ...temporaryHotSwapBody );
+//   document.body.append(element);
+// }
+// function swapBackToOriginal(){
+//   if(temporaryHotSwapBody == null) return;
+//   for(const body of temporaryHotSwapBody){
+//     document.body.append(body);
+//   }
+// }
+
+
+// //---> Events
+// element.props.content.subscribe((content)=>{
+//   if(!content) return;
+//   screenShowBody.appendChild(content);
+// })
+// element.props.switch.subscribe((value) => {
+//   if (value) {
+//     temporaryHotSwapBody = getAllBodyExceptThisElement();
+//     swapToClearBody();
+//     screenShowElement.show();
+//   } else {
+//     swapBackToOriginal();
+//     screenShowElement.close();
+//   }
+// });
+
+// backButton.addEventListener("click", () => {
+//   element.props.switch.set(false);
+// });
+
+// }, true);
+
+</script>

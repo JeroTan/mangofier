@@ -1,0 +1,154 @@
+---
+import Icon from "@components/Icon.astro";
+import DatePicker from "./DatePicker.astro";
+import {type Options } from "vanilla-calendar-pro";
+import { JSONstringifyEx } from "@jsarmyknife/native--parse";
+
+interface Props {
+  id?: string,
+  class?: string,
+  placeholder?: string,
+  config?: Options &{
+    minTime?: string,
+    maxTime?: string,
+  }
+}
+const { id="time-picker-element",placeholder = "Time", class:className = "" , config = {}} = Astro.props as Props;
+
+---
+<astro-time-picker id={id} data-placeholder={placeholder} data-config={JSONstringifyEx(config)} class={className}>
+  <DatePicker placeholder={placeholder} >
+    <Fragment slot="icon">
+      <Icon name="calendarTime" class="size-5 gray-600" />
+    </Fragment>
+  </DatePicker>
+</astro-time-picker>
+
+<script>
+//---> Imports
+import { ElementMaker, specialComponentSelector } from "@jsarmyknife/native--dom";
+import { transformDate } from "@jsarmyknife/native--math";
+import { JSONparseEx } from "@jsarmyknife/native--parse";
+import { State } from "@jsarmyknife/native--storage";
+import type { ELEMENT_DATE_PICKER, TIME_PICKER_PROPS } from "./structure";
+import type { Options } from "vanilla-calendar-pro";
+
+ElementMaker<TIME_PICKER_PROPS>("astro-time-picker", (element) => {
+
+  //---> Constants
+  type HOURS = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23;
+  type MINUTES = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59;
+  const dateInputElement = specialComponentSelector<ELEMENT_DATE_PICKER>("astro-date-picker", element);
+  const {minTime, maxTime, ...configRaw} =( element.dataset.config ? JSONparseEx(element.dataset.config) : {}) as Options &{
+    minTime?: string,
+    maxTime?: string,
+  }; 
+  const reviseDateConfig = {
+    timeMinHour: minTime ? new Date(minTime).getHours() as HOURS : 0,
+    timeMinMinute: minTime ? new Date(minTime).getMinutes() as MINUTES : 0,
+    timeMaxHour: maxTime ? new Date(maxTime).getHours() as HOURS : 23,
+    timeMaxMinute: maxTime ? new Date(maxTime).getMinutes() as MINUTES : 59,
+    timeControls: "all",
+    selectionTimeMode: 24,
+    ...configRaw,
+    layouts:{
+      default: `
+        <#ControlTime />
+      `
+    },
+  } as Options;
+  dateInputElement.props.picker.set(reviseDateConfig);
+  const stateManager = new State();
+  
+
+  //---> States
+  element.props.minTime = stateManager.addState<string>("minTime", minTime);
+  element.props.maxTime = stateManager.addState<string>("maxTime", maxTime);
+  element.props.input = dateInputElement.props.input;
+  element.props.picker = dateInputElement.props.picker;
+  element.props.displayConverter = stateManager.addState<((date:string)=>string)|null|undefined>("displayConverter", null);
+  element.props.value = stateManager.addState<string>("value", "");
+
+
+  //---> On Load
+
+
+
+  //---> Event Listeners
+  dateInputElement.props.picker.onChangeToInput = (self, _)=>{
+    if (!self.context.inputElement) return;
+    if (self.context.selectedTime) {
+      element.props.value.set(self.context.selectedTime);
+    }
+  };
+  element.props.value.subscribe((newValue) => {
+    if (newValue) {
+      if(!dateInputElement.props.picker.context.inputElement) return;
+      const funcDisplay = element.props.displayConverter.get();
+      if(!funcDisplay)
+        dateInputElement.props.picker.context.inputElement.value = newValue;
+      else
+        dateInputElement.props.picker.context.inputElement.value = funcDisplay(newValue);
+      element.props.picker.selectedTime = newValue;
+      const mainElement = element.props.picker.context.mainElement;
+      const hourElementInput = mainElement.querySelector("[name='hour']") as HTMLInputElement;
+      const minuteElementInput = mainElement.querySelector("[name='minute']") as HTMLInputElement;
+      if(hourElementInput && minuteElementInput){
+        hourElementInput.value = newValue.split(":")[0].padStart(2, "0");
+        minuteElementInput.value = newValue.split(":")[1].padStart(2, "0");
+      }
+    }
+  });
+  
+  element.props.minTime.subscribe((newVal) => {
+    const mainElement = element.props.picker.context.mainElement;
+    const hourElementInput = mainElement.querySelector("[name='hour']") as HTMLInputElement;
+    const hourRangeElement = mainElement.querySelector("input[type='range'][name='hour']") as HTMLInputElement;
+    const minuteElementInput = mainElement.querySelector("[name='minute']") as HTMLInputElement;
+    const minuteRangeElement = mainElement.querySelector("input[type='range'][name='minute']") as HTMLInputElement;
+    if(!hourElementInput || !minuteElementInput || !hourRangeElement || !minuteRangeElement){
+      dateInputElement.props.picker.set({
+        timeMinHour: newVal ? new Date( transformDate(new Date(), "yyyy-mm-dd")+"T"+newVal ).getHours()  as HOURS : 0,
+        timeMinMinute: newVal ? new Date( transformDate(new Date(), "yyyy-mm-dd")+"T"+newVal ).getMinutes() as MINUTES : 0,
+      });
+      return;
+    };
+
+    // If element is available, then no need to touch the picker instance config
+    const newHour = Number(newVal.split(":")[0]).toString();
+    const newMinute = Number(newVal.split(":")[1]).toString();
+    hourElementInput.min = newHour;
+    minuteElementInput.min = newMinute;
+    hourRangeElement.min = newHour;
+    minuteRangeElement.min = newMinute;
+    
+   
+    
+  });
+  element.props.maxTime.subscribe((newVal) => {
+    const mainElement = element.props.picker.context.mainElement;
+    const hourElementInput = mainElement.querySelector("[name='hour']") as HTMLInputElement;
+    const hourRangeElement = mainElement.querySelector("input[type='range'][name='hour']") as HTMLInputElement;
+    const minuteElementInput = mainElement.querySelector("[name='minute']") as HTMLInputElement;
+    const minuteRangeElement = mainElement.querySelector("input[type='range'][name='minute']") as HTMLInputElement;
+    if(!hourElementInput || !minuteElementInput || !hourRangeElement || !minuteRangeElement){
+      dateInputElement.props.picker.set({
+        timeMaxHour: newVal ? new Date( transformDate(new Date(), "yyyy-mm-dd")+"T"+newVal ).getHours() as HOURS : 23,
+        timeMaxMinute: newVal ? new Date( transformDate(new Date(), "yyyy-mm-dd")+"T"+newVal ).getMinutes() as MINUTES : 59,
+      });
+      return;
+    };
+
+    // If element is available, then no need to touch the picker instance config
+    const newHour = Number(newVal.split(":")[0]).toString();
+    const newMinute = Number(newVal.split(":")[1]).toString();
+    hourElementInput.max = newHour;
+    minuteElementInput.max = newMinute;
+    hourRangeElement.max = newHour;
+    minuteRangeElement.max = newMinute;
+
+  
+  });
+
+}, true);
+</script>

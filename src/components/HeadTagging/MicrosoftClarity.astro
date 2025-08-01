@@ -1,0 +1,27 @@
+---
+const AllowedCookiesData = Astro.cookies.has("NPV_ALLOW_COOKIES");
+let isAllowed = true;
+if(AllowedCookiesData){
+  if(Astro.cookies.get("NPV_ALLOW_COOKIES")!.value == "true"){
+    isAllowed = true;
+  }else{
+    isAllowed = false;
+  }
+}
+---
+<!-- Microsoft Clarity -->
+<!-- <script id="microsoft-clarity-tag" type="text/javascript" is:inline>
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "km693wh8gr");
+</script>
+
+<script is:inline define:vars={{isAllowed}}>
+  addEventListener("load", ()=>{
+    if(isAllowed == false){
+      document.getElementById("microsoft-clarity-tag").remove();
+    }
+  })
+</script> -->

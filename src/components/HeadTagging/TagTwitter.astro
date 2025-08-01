@@ -1,0 +1,20 @@
+---
+interface Props {
+  baseUrl?: string,
+  title?:string,
+  description?: string,
+}
+
+const {
+  baseUrl = Astro.url.origin,
+  title = "Nana Pool Villa",
+  description = "Nana Pool Villa is a luxurious retreat offering private pool villas in the heart of the city. Experience unparalleled comfort and relaxation with top-notch amenities and personalized service.",
+} = Astro.props;
+---
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@nanapoolvilla">
+<meta name="twitter:url" content={`${baseUrl}${Astro.url.pathname}`}>
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={`${baseUrl}/#`}>

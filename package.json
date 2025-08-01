@@ -1,0 +1,39 @@
+{
+  "name": "mangofier-v1",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build --minify",
+    "preview": "bun run build && wrangler pages dev ./dist --local-protocol=https --compatibility-date=2025-03-12 --live-reload=true",
+    "check": "astro check",
+    "astro": "astro",
+    "wrangler-login": "wrangler login",
+    "wrangler-dev": "npx wrangler pages dev dist"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^12.5.4",
+    "@astrojs/sitemap": "^3.4.1",
+    "@floating-ui/dom": "^1.7.1",
+    "@jsarmyknife/native--cryptographic": "^0.1.4-beta.0",
+    "@jsarmyknife/native--device": "^0.0.2-beta.0",
+    "@jsarmyknife/native--dom": "^0.1.18-beta.0",
+    "@jsarmyknife/native--friction": "^0.1.2-beta.0",
+    "@jsarmyknife/native--http": "^0.1.8-beta.0",
+    "@jsarmyknife/native--icon": "^0.1.7-beta.0",
+    "@jsarmyknife/native--location": "^0.0.3-beta.0",
+    "@jsarmyknife/native--math": "^0.1.11-beta.0",
+    "@jsarmyknife/native--parse": "^0.1.8-beta.0",
+    "@jsarmyknife/native--pop": "^0.1.10-beta.0",
+    "@jsarmyknife/native--storage": "^0.1.5-beta.0",
+    "@supabase/supabase-js": "^2.50.2",
+    "@tailwindcss/vite": "^4.0.17",
+    "astro": "^5.9.1",
+    "preline": "^3.0.1",
+    "lodash": "^4.17.21",
+    "tailwindcss": "^4.0.17",
+    "typescript": "^5.8.3",
+    "vanilla-calendar-pro": "^3.0.3"
+  }
+}

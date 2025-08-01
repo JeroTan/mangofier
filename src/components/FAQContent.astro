@@ -1,0 +1,23 @@
+---
+import { textTranslatorQ } from "src/i18/utils"
+const l = textTranslatorQ (Astro.url);
+---
+<main class=" space-y-8">
+  <h1 class="text-3xl font-bold">{ `Frequently Asked Questions` }</h1>
+
+  <div class="space-y-4">
+    {[
+      { q: `How does ManGoFier work?`, a: `ManGoFier works by providing a platform for users to read and share manga, manhwa, and webtoons. Users can browse through a vast library of titles and enjoy their favorite stories.` } as const,
+      { q: `Is ManGoFier free to use?`, a: `Yes, ManGoFier is completely free to use! We believe in providing a great reading experience without any cost to our users.` } as const,
+      { q: `What genres are available on ManGoFier?`, a: `ManGoFier offers a wide range of genres, including action, romance, fantasy, and more. There's something for everyone!` } as const
+    ].map(({ q, a }) => (
+      <details class="bg-white shadow border border-gray-50 rounded-lg cursor-pointer open:shadow">
+        <summary class="font-medium text-primary text-sm select-none px-4 pt-4 mb-4 w-full">
+          { q }
+        </summary>
+        <p class="text-sm text-gray-700 px-4 pb-4 mt-4">{ a }</p>
+      </details>
+    ))}
+  </div>
+</main>
+

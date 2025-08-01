@@ -1,0 +1,23 @@
+#elementalist h1, #elementalist h2, #elementalist h3, #elementalist h4, #elementalist h5, #elementalist h6{
+  @apply md:text-start text-center  ;
+  
+}
+#elementalist h1{
+  @apply lg:text-7xl sm:text-6xl text-4xl font-semibold  mb-16;
+  line-height: 1.2!important;
+}
+#elementalist h2{
+  @apply lg:text-4xl sm:text-3xl text-2xl font-semibold mt-16 mb-2;
+}
+#elementalist h3{
+  @apply sm:text-2xl text-xl mt-10 mb-1;
+}
+#elementalist p{
+  @apply mb-5 font-light
+}
+#elementalist ol{
+  @apply list-decimal pl-6
+}
+#elementalist ul{
+  @apply list-disc pl-6
+}

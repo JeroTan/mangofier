@@ -1,0 +1,54 @@
+---
+import { getLangFromUrl, pathTranslatorQ } from "src/i18/utils";
+import "../styles/global.css";
+import { languages } from "src/i18/ui";
+
+interface Props {
+	title: string,
+	pageMicrodataScope: string,
+}
+
+const {
+	title,
+	pageMicrodataScope = "https://schema.org/WebPage",
+} = Astro.props;
+const currentLang = getLangFromUrl(Astro.url);
+const t = pathTranslatorQ(Astro.url);
+// const newUrl = new URL(Astro.url);
+// const reconstructPathName  = newUrl.toString().replace(newUrl.origin,"")
+---
+
+<!doctype html>
+<html lang={currentLang} itemscope itemtype={pageMicrodataScope}>
+	<head>
+		<slot name="head-first" />
+
+		{/* LANG */}
+		{ (Object.keys(languages)).map((lang) => {
+			if(lang === currentLang) return "";
+			return <link rel="alternate" hreflang={lang} href={Astro.url.origin + t(Astro.url.pathname, lang)} />
+		}) }
+		{/* LANG */}
+
+		{/* HTML Format */}
+		<meta name="application-name" content="ManGoFier" />
+		<title>{title}</title>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+
+		<link rel="icon" type="image/ico" href="/favicon.ico" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta name="robots" content="index, follow" />
+		<meta name="theme-color" content="#ffffff" />
+		{/* HTML Format */}
+
+		<slot name="head" />
+	</head>
+	<body>
+		<slot />
+		<script>
+			import 'preline';
+		</script>
+	</body>
+</html>

@@ -1,0 +1,41 @@
+---
+import { getLangFromUrl } from "src/i18/utils"
+import ENxCookiePolicyContents from "./CookiePolicyLang.astro/ENxCookiePolicyContents.astro"
+import PHxCookiePolicyContents from "./CookiePolicyLang.astro/PHxCookiePolicyContents.astro"
+
+const lang = getLangFromUrl(Astro.url)
+---
+
+<main id="cookie-policy-main" class="mt-20 mb-20 space-y-6">
+  {lang === "en" && <ENxCookiePolicyContents />}
+  {lang === "ph" && <PHxCookiePolicyContents />}
+</main>
+
+<script>
+//---> Import
+import { DOMPopTransformer } from "@jsarmyknife/native--dom";
+import { Modal } from "@jsarmyknife/native--pop";
+import { actions } from "astro:actions";
+
+
+//---> Const
+const optOutButton = document.getElementById("opt-out-button") as HTMLButtonElement;
+
+
+
+//---> Event Listener
+optOutButton.addEventListener("click", async () => {
+  const processingModal = new Modal(DOMPopTransformer);
+  const [_, procClose] = processingModal.type("loading").message('').title("Removing Cookies").run();
+  
+  const {error} = await actions.cookies.allow(false);
+  if(error){
+    const failedModal = new Modal(DOMPopTransformer);
+    failedModal.type("error").title("Failed to Remove Cookies").message("An error occurred while trying to remove cookies. Please try again later.").run();
+  }else{
+    procClose();
+  }
+});
+
+
+</script>

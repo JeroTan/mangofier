@@ -1,0 +1,155 @@
+
+@utility btn{
+  @apply flex items-center gap-2 justify-center
+  px-4 py-3 rounded-lg
+  bg-gray-700 hover:bg-gray-950 text-slate-50
+  enabled:bg-gray-700 enabled:hover:bg-gray-950 enabled:text-slate-50
+  disabled:bg-gray-200 disabled:text-white
+  focus:outline-0 focus:ring-0 focus:stroke-0
+  active:outline-0 active:ring-0 active:stroke-0
+  outline-0 ring-0 stroke-0
+  font-medium text-center
+  cursor-pointer
+  disabled:cursor-not-allowed
+  ;
+}
+@utility btn-outline {
+  @apply flex items-center gap-2 justify-center
+  px-4 py-3 rounded-lg
+  bg-transparent hover:bg-gray-950 text-slate-50 hover:text-slate-50 border border-gray-700
+  enabled:bg-transparent enabled:hover:bg-gray-950 enabled:text-slate-50 enabled:hover:text-slate-50 enabled:border enabled:border-gray-700
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700
+  focus:outline-0 focus:ring-0 focus:stroke-0
+  active:outline-0 active:ring-0 active:stroke-0
+  outline-0 ring-0 stroke-0
+  font-medium text-center
+  cursor-pointer
+  disabled:cursor-not-allowed
+  ;
+}
+
+@utility btn-rounded{
+  @apply flex items-center gap-2 justify-center
+  px-4 py-3 rounded-full
+  bg-gray-700 hover:bg-gray-950 text-slate-50
+  enabled:bg-gray-700 enabled:hover:bg-gray-950 enabled:text-slate-50
+  disabled:bg-gray-200 disabled:text-white
+  focus:outline-0 focus:ring-0 focus:stroke-0
+  active:outline-0 active:ring-0 active:stroke-0
+  outline-0 ring-0 stroke-0
+  font-medium text-center
+  cursor-pointer
+  disabled:cursor-not-allowed
+  ;
+}
+
+@utility btn-rounded-outline{
+  @apply flex items-center gap-2 justify-center
+  px-4 py-3 rounded-full
+  bg-transparent hover:bg-gray-950 text-slate-50 hover:text-slate-50 border border-gray-700
+  enabled:bg-transparent enabled:hover:bg-gray-950 enabled:text-slate-50 enabled:hover:text-slate-50 enabled:border enabled:border-gray-700
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700
+  focus:outline-0 focus:ring-0 focus:stroke-0
+  active:outline-0 active:ring-0 active:stroke-0
+  outline-0 ring-0 stroke-0
+  font-medium text-center
+  cursor-pointer
+  disabled:cursor-not-allowed
+  ;
+}
+@utility btn-xs {
+  @apply px-3 py-1 gap-[1px] text-xs rounded-lg ;
+}
+@utility btn-sm {
+  @apply px-3 py-1 gap-1 rounded-lg ;
+}
+
+@utility btn-lg {
+  @apply px-5 py-3 rounded-lg;
+}
+
+@utility btn-wide {
+  @apply px-10;
+}
+
+@utility btn-outline-clear {
+  @apply bg-transparent hover:bg-gray-950 text-slate-50 hover:text-slate-50 border border-gray-700
+  enabled:bg-transparent enabled:hover:bg-gray-950 enabled:text-slate-50 enabled:hover:text-slate-50 enabled:border enabled:border-gray-700
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-300;
+}
+
+@utility btn-default {
+  @apply bg-gray-700 hover:bg-gray-950 text-slate-50
+  enabled:bg-gray-700 enabled:hover:bg-gray-950 enabled:text-slate-50
+  disabled:bg-gray-200 disabled:text-white;
+}
+@utility btn-outline-default {
+  @apply bg-transparent hover:bg-gray-950 text-slate-50 hover:text-slate-50 border border-gray-700
+  enabled:bg-transparent enabled:hover:bg-gray-950 enabled:text-slate-50 enabled:hover:text-slate-50 enabled:border enabled:border-gray-700
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-primary {
+  @apply bg-(--color-primary) hover:bg-(--color-primary-darker) text-white
+  enabled:bg-(--color-primary) enabled:hover:bg-(--color-primary-darker) enabled:text-white
+  disabled:bg-gray-200 disabled:text-white;
+}
+
+@utility btn-outline-primary {
+  @apply bg-transparent hover:bg-(--color-primary) text-slate-50 border hover:text-white border-(--color-primary)
+  enabled:bg-transparent enabled:hover:bg-(--color-primary) enabled:text-(--color-primary) enabled:hover:text-white enabled:border enabled:border-(--color-primary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-secondary {
+  @apply bg-green-500 hover:bg-green-600 text-white
+  enabled:bg-green-500 enabled:hover:bg-green-600 enabled:text-white
+  disabled:bg-gray-200 disabled:text-white;
+}
+
+@utility btn-error {
+  @apply bg-(--color-red-primary) hover:bg-red-600 text-white
+  enabled:bg-(--color-red-primary) enabled:hover:bg-red-600 enabled:text-white
+  disabled:bg-gray-200 disabled:text-white;
+}
+@utility btn-outline-error {
+  @apply bg-transparent hover:bg-(--color-red-primary) text-(--color-red-primary) border border-(--color-red-primary)
+  enabled:bg-transparent enabled:hover:bg-(--color-red-primary) enabled:text-(--color-red-primary) enabled:border enabled:border-(--color-red-primary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-ghost {
+  @apply bg-transparent hover:bg-gray-700 text-slate-50
+  enabled:bg-transparent enabled:hover:bg-gray-700 enabled:text-slate-50
+  disabled:bg-transparent disabled:text-gray-300;
+}
+
+@utility btn-none {
+  color: currentColor;
+  @apply px-0 py-0 rounded-none bg-inherit hover:bg-inherit;
+}
+
+
+@utility btn-outline-blue {
+  @apply bg-transparent hover:bg-(--color-blue-primary) text-(--color-blue-primary) hover:text-white border border-(--color-blue-primary)
+  enabled:bg-transparent enabled:hover:bg-(--color-blue-primary) enabled:text-(--color-blue-primary) enabled:hover:text-white enabled:border enabled:border-(--color-blue-primary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-outline-yellow {
+  @apply bg-transparent hover:bg-(--color-yellow-primary) text-(--color-yellow-primary) hover:text-white border border-(--color-yellow-primary)
+  enabled:bg-transparent enabled:hover:bg-(--color-yellow-primary) enabled:text-(--color-yellow-primary) enabled:hover:text-white enabled:border enabled:border-(--color-yellow-primary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-outline-yellow-secondary {
+  @apply bg-transparent hover:bg-(--color-yellow-secondary) text-(--color-yellow-secondary) hover:text-white border border-(--color-yellow-secondary)
+  enabled:bg-transparent enabled:hover:bg-(--color-yellow-secondary) enabled:text-(--color-yellow-secondary) enabled:hover:text-white enabled:border enabled:border-(--color-yellow-secondary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}
+
+@utility btn-outline-green {
+  @apply bg-transparent hover:bg-(--color-green-primary) text-(--color-green-primary) hover:text-white border border-(--color-green-primary)
+  enabled:bg-transparent enabled:hover:bg-(--color-green-primary) enabled:text-(--color-green-primary) enabled:hover:text-white enabled:border enabled:border-(--color-green-primary)
+  disabled:bg-transparent disabled:text-gray-300 disabled:border disabled:border-gray-700;
+}

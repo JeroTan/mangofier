@@ -1,0 +1,37 @@
+---
+import { languageDescription } from "src/i18/ui";
+import { getLangFromUrl, textTranslatorQ, useTranslatedPath } from "src/i18/utils"
+
+const lang = getLangFromUrl(Astro.url);
+const transPath = useTranslatedPath(lang);
+const l = textTranslatorQ(Astro.url);
+
+const newUrl = new URL(Astro.url);
+const reconstructPathName  = newUrl.toString().replace(newUrl.origin,"")
+---
+<astro-language-selection>
+  <h2 class="h7 mb-6">{l("language.choose_a_language")}</h2>
+  <section class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+    {
+      Object.entries(languageDescription).map(([langCode, desc]) => {
+        return (
+          <a href={transPath(reconstructPathName, langCode)} class={`${langCode == lang ? "pointer-events-none btn-outline" :"btn btn-ghost "} flex flex-col gap-0 items-start text-sm px-2`} lang={langCode} hreflang={langCode}>
+            <span>{desc.name}</span>
+            <span class="font-light">{desc.country}</span>
+          </a>
+        );
+      })
+    }
+  </section>
+</astro-language-selection>
+
+<script>
+//---> Import
+import {ElementMaker} from "@jsarmyknife/native--dom"
+
+ElementMaker("astro-language-selection", element=>{
+//---> Const
+
+
+}, true);
+</script>

@@ -1,0 +1,15 @@
+@utility badge{
+  @apply rounded-full px-2 bg-white text-gray-800 text-xs;
+}
+
+@utility badge-primary{
+  @apply bg-(--color-primary) text-white;
+}
+
+@utility badge-neutral{
+  @apply bg-(--color-neutral) text-white;
+}
+
+@utility badge-neutral-dark{
+  @apply bg-(--color-neutral-dark) text-white;
+}

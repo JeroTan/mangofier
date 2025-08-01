@@ -1,0 +1,104 @@
+---
+import Icon from '@components/Icon.astro';
+import { JSONstringifyEx } from '@jsarmyknife/native--parse';
+import {type Options } from "vanilla-calendar-pro";
+
+interface Props {
+  id?:string,
+  class?: string,
+  placeholder?: string,
+  config?: Options
+}
+
+const { id="date-picker-element", class: className, placeholder = "Date", config= {} } = Astro.props as Props;
+---
+<astro-date-picker id={id} class={className} data-config={JSONstringifyEx(config)} >
+  <div tabindex="0" class="flex items-center w-full">
+    <input aria-label="date-input" class={`input rounded-r-none border-r-0`} type="text" aria-readonly="true" readonly placeholder={placeholder} />
+    <!-- <button aria-label="picker-button-icon" class="input w-fit rounded-l-none cursor-pointer">
+      <slot name="icon" >
+        <Icon name="calendarDate" class="size-5 text-gray-600" />
+      </slot>
+    </button> -->
+  </div>
+</astro-date-picker>
+
+<script>
+//---> Imports
+import { ElementMaker } from "@jsarmyknife/native--dom";
+import { JSONparseEx } from "@jsarmyknife/native--parse";
+import { State } from "@jsarmyknife/native--storage";
+import type { DATE_PICKER_PROPS } from "./structure";
+import { Calendar, type Options } from "vanilla-calendar-pro";
+import 'vanilla-calendar-pro/styles/index.css';
+
+ElementMaker<DATE_PICKER_PROPS>("astro-date-picker",(element)=>{
+//---> Constants
+// const buttonIconElement = element.querySelector("button[aria-label='picker-button-icon']") as HTMLButtonElement;  
+const dateInputElement = element.querySelector(`input[aria-label='date-input']`) as HTMLInputElement;
+const configRaw:Options = element?.dataset?.config ? JSONparseEx(element.dataset.config) : {};
+const stateManager = new State();
+
+//---> States
+const displayConverter = stateManager.addState<((date:string)=>string)|null|undefined>("displayConverter", null);
+const isShow = stateManager.addState<boolean>("isShow", false);
+
+element.props.displayConverter = displayConverter;
+element.props.picker = new Calendar(dateInputElement,{
+  inputMode: true,
+  positionToInput: "auto",
+  selectedTheme: "light",
+  locale: "en",
+  settings:{
+    visibility:{
+      today:false,
+    }
+  },
+  styles:{
+    calendar:"vc !rounded-4xl bg-white w-full z-50",
+    dateBtn:"vc-date__btn aspect-square",
+  },
+  ...configRaw
+} as Options);
+element.props.picker.init();
+element.props.input = dateInputElement;
+element.props.value = stateManager.addState<string>("value", "");
+
+//---> Functionality
+
+//---> Event Listeneres
+element.props.picker.onChangeToInput = (self)=>{
+  if(!self.context.inputElement) return;
+  if(self.context.selectedDates[0]){
+    element.props.value.set(self.context.selectedDates[0]);
+    // self.hide();
+  }
+}
+element.props.value.subscribe((newValue)=>{
+  if(newValue){
+    const funcDisplay = displayConverter.get();
+    if(!element.props.picker.context.inputElement) return;
+    if(!funcDisplay)
+      element.props.picker.context.inputElement.value = newValue;
+    else
+      element.props.picker.context.inputElement.value = funcDisplay(newValue);
+    element.props.picker.selectedDates = [newValue];
+  }
+});
+
+element.props.picker.onShow = ()=>{
+  isShow.set(true);
+}
+// buttonIconElement.addEventListener("click", ()=>{
+//   if(isShow.get()){
+//     element.props.picker.hide();
+//     isShow.set(false);
+//   }else{
+//     element.props.input.focus();
+//     element.props.picker.show();
+//     isShow.set(true);
+//   }
+// });
+
+}, true);
+</script>
