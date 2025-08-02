@@ -77,13 +77,13 @@ import logo from "src/assets/logo.png";
   
 </nav>
 
-<aside id="navbar-aside" class="fixed bottom-0 sm:hidden block w-full z-20 bg-slate-900 border-t border-(--color-primary) shadow shadow-gray-100/25 px-2 py-1">
-  <div id="open-navbar-aside" class="absolute right-full bg-slate-900 rounded-l border-l border-t border-b border-(--color-primary)">
+<aside id="navbar-aside" class="fixed bottom-0 sm:hidden block w-full z-20 bg-slate-900 border-t border-(--color-primary) shadow shadow-gray-100/25 px-2">
+  <div id="switch-navbar-aside-button" class="absolute right-full h-10 bg-slate-900 flex flex-col justify-center rounded-l border-l border-t border-b border-(--color-primary)">
     <Icon name="prev" outClass="size-5" />
   </div>
 
 
-  <div class="flex w-full justify-around px-10">
+  <div class="flex w-full justify-around px-10 py-1">
     <a href={t(`/`)}  class="btn btn-sm btn-ghost flex-col gap-0">
       <Icon name="search" outClass="size-7" />
       <span class="text-xs font-light">{`Explore`}</span>
@@ -130,16 +130,54 @@ const languageButton = pageNavigationElement.querySelector("#change-language-but
 const languageSelectionElement = specialComponentSelector("astro-language-selection") as HTMLElement;
 const languageSelection = languageSelectionElement.querySelector("astro-language-selection") as HTMLElement;  
 const logOutButton = pageNavigationElement.querySelector("#log-out-button") as HTMLButtonElement;
-const openNavbarAside = document.getElementById("open-navbar-aside") as HTMLDivElement;
+const switchNavBarAside = document.getElementById("switch-navbar-aside-button") as HTMLDivElement;
 const navbarAside = document.getElementById("navbar-aside") as HTMLDivElement;
 const animationOpenAside = new AnimeTroupe();
+
+const animationDuration = {duration: 400, fill:"both", easing: "easeOutQuad"};
+const navbarAsideAnimate = new AnimeTroupe(navbarAside, [
+	{transform: `translateX(100%)`},
+], animationDuration);
+
+const navbarAsideAnimateReverse = new AnimeTroupe(navbarAside, [
+	{transform: `translateX(0)`},
+], animationDuration);
+
+
+
 const t = pathTranslator();
 
 //---> State
+let navbarAsideAnimating = false;
 
+
+//---> Onload
+setTimeout(()=>{
+  closeNavbarAside();
+}, 2000);
 
 
 //---> Function
+function closeNavbarAside(){
+  if(navbarAsideAnimating) return;
+  navbarAsideAnimating = true;
+  navbarAsideAnimate.play();
+  navbarAsideAnimate.isStop(()=>{
+    navbarAsideAnimating = false;
+  })
+}
+
+function openNavbarAside(){
+  if(navbarAsideAnimating) return;
+  navbarAsideAnimating = true;
+  navbarAsideAnimateReverse.play();
+  navbarAsideAnimateReverse.isStop(()=>{
+    navbarAsideAnimating = false;
+  });
+  setTimeout(()=>{
+    closeNavbarAside();
+  }, 5000);
+}
 
 
 //---> LIstener
@@ -148,5 +186,8 @@ languageButton.addEventListener("click", () => {
 });
 logOutButton.addEventListener("click", async () => {
   await logoutProcess();
+});
+navbarAside.addEventListener("click", (e) => {
+  openNavbarAside();
 });
 </script>
