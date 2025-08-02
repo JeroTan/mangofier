@@ -1,5 +1,5 @@
 
-name = "nanapoolvilla"
+name = "mangofier"
 main = "./dist/_worker.js/index.js"
 compatibility_date = "2025-05-05"
 compatibility_flags = [ "nodejs_compat" ]
