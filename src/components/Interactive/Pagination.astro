@@ -21,59 +21,59 @@ if(currentPage > totalPages) {
   <main class="flex justify-center w-full gap-1">
 
     <div id="prev-page">
-      <button class="btn-rounded btn-ghost aspect-square h-10 p-1" disabled={currentPage <= 1}>
+      <button class="btn btn-ghost aspect-square h-10 p-1" disabled={currentPage <= 1}>
         <Icon name="prev" outClass="size-4" />  
       </button>
     </div>
 
     <div id="first-page" class={`${currentPage <= 1 ? 'hidden' : ''}`}>
-      <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+      <button class="btn btn-ghost aspect-square h-10 p-1">
         1
       </button>
     </div>
 
     <div id="prev-ellipsis" class={`${currentPage <= 3 ? 'hidden' : ''}`}>
-      <button class="rounded-full aspect-square h-10 p-1">
+      <button class="btn btn-ghost aspect-square h-10 p-1">
         ...
       </button>
     </div>
 
     <div id="prev-pages-container" class={`${currentPage <= 2 ? 'hidden' : ''}`}>
       <ul class="flex gap-1 mr-1">
-        <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+        <button class="btn btn-ghost aspect-square h-10 p-1">
           {currentPage - 1}
         </button>
       </ul>
     </div>
     
     <div id="current-page">
-      <button class="rounded-full bg-gray-700 text-white aspect-square h-10 p-1">
+      <button class="btn text-white aspect-square h-10 p-1">
         {currentPage}
       </button>
     </div>
 
     <div id="next-pages-container" class={`${totalPages <= currentPage+1 ? 'hidden' : ''}`}>
       <ul class="flex gap-1 ml-1">
-        <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+        <button class="btn btn-ghost aspect-square h-10 p-1">
           {currentPage + 1}
         </button>
       </ul>
     </div>
     
     <div id="next-ellipsis" class={`${totalPages <= currentPage+2 ? 'hidden' : ''}`}>
-      <button class="rounded-full aspect-square h-10 p-1">
+      <button class="btn btn-ghost aspect-square h-10 p-1">
         ...
       </button>
     </div>
 
     <div id="last-page" class={`${totalPages <= currentPage ? 'hidden' : ''}`}>
-      <button class="btn-rounded btn-ghost aspect-square h-10 p-1">
+      <button class="btn btn-ghost aspect-square h-10 p-1">
         {totalPages}
       </button>
     </div>
 
     <div id="next-page">
-      <button class="btn-rounded btn-ghost aspect-square h-10 p-1" disabled={currentPage >= totalPages}>
+      <button class="btn btn-ghost aspect-square h-10 p-1" disabled={currentPage >= totalPages}>
         <Icon name="next" outClass="size-4" />  
       </button>
     </div>

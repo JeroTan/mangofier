@@ -1,6 +1,7 @@
 ---
 import ComicSearch from "@components/ComicComponent/ComicSearch.astro";
 import Listing from "@components/ComicComponent/Listing.astro";
+import { actions } from "astro:actions";
 import { textTranslatorQ } from "src/i18/utils";
 import type { COMIC_CONCISE_DATA } from "src/structure/comicCollector";
 import { getPage } from "src/utilities/Api";
@@ -8,13 +9,13 @@ const l = textTranslatorQ(Astro.url);
 
 const page = getPage(Astro.url)
 
-// const { data, error} = await Astro.callAction( actions.comic.list,  page);
+const { data, error} = await Astro.callAction( actions.comic.list,  page);
 
-// const comics: COMIC_CONCISE_DATA[] = data?.data || [];
-// const pagination: number[] = data?.pagination || [];
+const comics: COMIC_CONCISE_DATA[] = data?.data || [];
+const pagination: number[] = data?.pagination || [];
 
-const comics: COMIC_CONCISE_DATA[] = [];
-const pagination: number[] = [1];
+// const comics: COMIC_CONCISE_DATA[] = [];
+// const pagination: number[] = [1];
 
 
 ---
