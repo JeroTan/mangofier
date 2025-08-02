@@ -10,13 +10,12 @@ const l = textTranslatorQ(Astro.url);
 
 const page = getPage(Astro.url)
 
-// const { data, error} = await Astro.callAction( actions.comic.list,  page);
+interface Props {
+  comics: COMIC_CONCISE_DATA[],
+  pagination: number[],
+}
 
-// const comics: COMIC_CONCISE_DATA[] = data?.data || [];
-// const pagination: number[] = data?.pagination || [];
-
-const comics: COMIC_CONCISE_DATA[] = [];
-const pagination: number[] = [1];
+const { comics, pagination } = Astro.props;
 
 ---
 <astro-listing>

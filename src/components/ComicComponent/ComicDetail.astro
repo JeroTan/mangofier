@@ -1,0 +1,74 @@
+---
+import { btoaEx } from '@jsarmyknife/native--cryptographic';
+import Image from 'astro/components/Image.astro';
+import { pathTranslatorQ, textTranslatorQ } from 'src/i18/utils';
+import type { COMIC_DETAIL } from 'src/structure/comicCollector'
+
+const l = textTranslatorQ(Astro.url);
+const t = pathTranslatorQ(Astro.url);
+
+interface Props {
+  comic: COMIC_DETAIL,
+}
+const { comic } = Astro.props;
+---
+<astro-comic-detail>
+<main>
+  <!-- Top Section -->
+  <div class="flex lg:flex-row md:flex-row sm:flex-col flex-col items-start gap-6 mb-10">
+    <!-- Cover Image -->
+    <Image 
+      src={comic.imageUrl} 
+      alt={comic.title} 
+      height={300}
+      width={300}
+      class="lg:w-80 md:w-72 sm:w-64 w-full rounded-xl shadow-lg object-cover"
+      loading="lazy"
+    />
+
+    <!-- Comic Info -->
+    <div class="flex-1">
+      <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">{comic.title}</h1>
+      <div class="text-sm text-gray-400 mb-4">
+        <span class="inline-block mr-4"><strong>{l("comic-detail.status")}:</strong> {comic.status}</span>
+        <span class="inline-block"><strong>{l("comic-detail.author")}:</strong> {comic.author}</span>
+      </div>
+
+      <!-- Genres -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        {comic.genres.map((genre) => (
+          <span class="bg-emerald-600/10 text-emerald-300 border border-emerald-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+            {genre}
+          </span>
+        ))}
+      </div>
+
+      <!-- Start Reading Button -->
+      {comic.chapters.length > 0 && (
+        <a 
+            href={t(`/comic/read/${comic.id}/${comic.chapters[comic.chapters.length - 1].chapterId}?c=${btoaEx(JSON.stringify(comic.chapters))}`)} 
+          class="btn btn-primary w-fit">
+          📖 {l("comic-detail.start-reading")}
+        </a>
+      )}
+    </div>
+  </div>
+
+  <!-- Chapters List -->
+  <div class="w-full">
+    <h2 class="text-lg md:text-xl lg:text-2xl font-semibold text-white mb-4">{l("comic-detail.chapters")}</h2>
+    <ul class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      {comic.chapters.map((chap) => (
+        <li>
+          <a 
+            href={t(`/comic/read/${comic.id}/${chap.chapterId}?c=${btoaEx(JSON.stringify(comic.chapters))}`)} 
+            class="flex justify-between items-center px-4 py-2 border border-white/10 hover:border-emerald-400 hover:bg-emerald-500/5 rounded transition text-sm md:text-base lg:text-base text-white">
+            <span>{l("comic-detail.chapter")} {chap.chapterId}</span>
+            <span class="text-gray-400 text-xs">{chap.releaseDate}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</main>
+</astro-comic-detail>

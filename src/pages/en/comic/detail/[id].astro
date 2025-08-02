@@ -1,0 +1,19 @@
+---
+import PageComicDetail from "@components/Page/PageComicDetail.astro";
+import PagePlate from "@layouts/PagePlate.astro";
+import { actions } from "astro:actions";
+
+const id = Astro.params.id || "";
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+const { data, error} = await Astro.callAction( actions.comic.detail,  id);
+if(error){
+  console.log("Error fetching comic detail:", error);
+  return Astro.redirect("/404");
+}
+---
+<PagePlate>
+  <PageComicDetail comic={data} />
+</PagePlate>

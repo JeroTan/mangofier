@@ -88,13 +88,13 @@ export const comic = {
 
       switch (comicParsedId.type) {
         case "MANGA":{
-          const response = await api(ctx.url, ctx.cookies).path(`/manga/${input.id}/${input.chapter}`).get().request();
+          const response = await api(ctx.url, ctx.cookies).path(`/manga/${comicParsedId.id}/${input.chapter}`).get().request();
           await checkApiErrorAction(response);
           const raw = await response.json() as MANGA_CHAPTER_VIEW;
           return mangaToComicChapterView(raw);
         }break;
         case "MANWHA":{
-          const response = await api2(ctx.url, ctx.cookies).path(`/manwha/${input.id}/${input.chapter}`).get().request();
+          const response = await api2(ctx.url, ctx.cookies).path(`/manwha/${comicParsedId.id}/${input.chapter}`).get().request();
           await checkApiErrorAction(response);
           const raw = await response.json() as {
             data: MANWHA_CHAPTER_VIEW

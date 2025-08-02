@@ -25,9 +25,9 @@ export interface COMIC_CHAPTER_VIEW {
 }
 
 export interface COMIC_SEARCHED_DATA {
+  id: string,
   title: string,
   imageUrl: string,
-  id: string,
 }
 
 export interface COMIC_ID_COLLIDER{

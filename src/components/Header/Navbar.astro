@@ -18,8 +18,6 @@ const l = textTranslatorQ(Astro.url);
 const isLogin = await IsLogin(Astro.cookies, Astro.url);
 import logo from "src/assets/logo.png";
 ---
-
-
 <nav 
   id="page-navigation" 
   class={`${hideWhenSmall ? "sm:block hidden" : ""} sticky top-0 z-20 bg-slate-900 border-b border-(--color-primary) shadow-(--color-primary)`}

@@ -31,6 +31,11 @@ export const ui = {
     "search.placeholder": "Search. . . ",
     "search.no-search-term-title": "Empty Search",
     "search.no-search-term-subtitle": "Please enter a search term.",
+    "search.you-searched-for": "You searched for: ",
+    "search.a-total-of": "A total of ",
+    "search.was-found": " was found.",
+
+    "back.to-home": "Back to Home",
     
     "home.title": "Welcome to ManGofier!",
     "home.subtitle": "Search and discover your favorite manga and manwha in one place. Browse through our collection and find new series to enjoy.",
@@ -59,6 +64,16 @@ export const ui = {
     "listing.no-data-try-searching":"Try searching for a specific title or check back later. ",
     "listing.no-data-theory": "Since this is free, maybe the server is down. :wink:",
 
+    "comic-detail.status": "Status",
+    "comic-detail.author": "Author",
+    "comic-detail.chapters": "Chapters",
+    "comic-detail.chapter": "Chapter",
+    "comic-detail.start-reading": "Start Reading",
+
+    "comic-view.previous": "Previous Chapter",
+    "comic-view.next": "Next Chapter",
+    "comic-view.back-to-detail": "Back to Detail",
+
     "404.title": "404 - Page Not Found",
     "404.subtitle": "Sorry, the page you are looking for does not exist.",
     "404.button": "Go to Home",
@@ -73,6 +88,11 @@ export const ui = {
     "search.placeholder": "Maghanap. . .",
     "search.no-search-term-title": "Walang Laman",
     "search.no-search-term-subtitle": "Pakilagay ang 'yong hahanapin.",
+    "search.you-searched-for": "Hinahanap mo ang: ",
+    "search.a-total-of": "Mayroong kabuuang ",
+    "search.was-found": " na nahanap.",
+
+    "back.to-home": "Bumalik sa Home",
 
     "home.title": "Maligayang pagdating sa ManGofier!",
     "home.subtitle": "Maghanap at tuklasin ang iyong paboritong manga at manwha sa iisang lugar. I-browse ang koleksyon at maghanap ng mga bagong serye na maaari mong tangkilikin.",
@@ -100,6 +120,16 @@ export const ui = {
     "listing.no-data": "Wala pa atang comics ngayon",
     "listing.no-data-try-searching": "Subukan ang paghahanap gamit ang pamagat o bumalik na lamang sa ibang pagkakataon.",
     "listing.no-data-theory": "Dahil libre ito, maaaring down ang server. :wink:",
+
+    "comic-detail.status": "Ganap",
+    "comic-detail.author": "May-akda",
+    "comic-detail.chapters": "Mga Kabanata",
+    "comic-detail.chapter": "Kabanata",
+    "comic-detail.start-reading": "Simulan Basahin",
+
+    "comic-view.previous": "Nakaraang Kabanata",
+    "comic-view.next": "Susunod na Kabanata",
+    "comic-view.back-to-detail": "Bumalik sa Detalye",
 
     "404.title": "404 - Pahinang 'di Natagpuan",
     "404.subtitle": "Paumanhin, ang pahinang hinahanap mo ay kathang-isip lamang.",

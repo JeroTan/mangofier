@@ -1,0 +1,48 @@
+---
+import PageComicChapterView from "@components/Page/PageComicChapterView.astro";
+import { atobEx } from "@jsarmyknife/native--cryptographic";
+import PagePlate from "@layouts/PagePlate.astro";
+import { actions } from "astro:actions";
+import type { COMIC_CHAPTER_SUMMARY } from "src/structure/comicCollector";
+
+const id = Astro.params.id || "";
+const chapter = Astro.params.chapter || "";
+
+if (!id || !chapter) {
+  return Astro.redirect("/404");
+}
+
+const { data, error} = await Astro.callAction( actions.comic.chapterView,  {id, chapter: Number(chapter)});
+if(error){
+  console.log("Error fetching comic detail:", error);
+  return Astro.redirect("/404");
+}
+
+const chapterSummaryRaw = Astro.url.searchParams.get("c");
+let chapterSummary: COMIC_CHAPTER_SUMMARY[] = [];
+if (chapterSummaryRaw) {
+  try {
+    const parsedChapters = JSON.parse(atobEx(chapterSummaryRaw)) as COMIC_CHAPTER_SUMMARY[];
+    chapterSummary = parsedChapters.map(chap => ({
+      ...chap,
+      chapterId: chap.chapterId.toString(),
+      releaseDate: chap.releaseDate,
+    }));
+  } catch (e) {
+    console.error("Failed to parse chapter summary:", e);
+  }
+}
+if(!chapterSummary || chapterSummary.length === 0) {
+  const { data, error } = await Astro.callAction(actions.comic.detail, id);
+  if (error) {
+    console.error("Failed to fetch comic detail for chapter summary:", error);
+    return Astro.redirect("/404");
+  } else {
+    chapterSummary = data.chapters;
+  }
+}
+
+---
+<PagePlate title="Chapter">
+  <PageComicChapterView chapterData={data} id={id} chapters={chapterSummary} currentChapter={chapter} />
+</PagePlate>

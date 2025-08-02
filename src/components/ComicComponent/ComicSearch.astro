@@ -4,11 +4,16 @@ import Icon from "@components/Icon.astro";
 import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
 const t = pathTranslatorQ(Astro.url);
 const l = textTranslatorQ(Astro.url);
+
+interface Props {
+  value?: string;
+}
+const { value = "" } = Astro.props;
 ---
 
 <astro-comic-search>
   <div class="flex items-center gap-1">
-    <Input id="search-input" placeholder={l(`search.placeholder`)} />
+    <Input id="search-input" placeholder={l(`search.placeholder`)} value={value} />
     <button id="search-button" class="btn btn-primary ">
       <Icon name="search" outClass="size-6" />
     </button>

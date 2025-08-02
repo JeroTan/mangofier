@@ -1,0 +1,89 @@
+---
+import ComicChapterView from "@components/ComicComponent/ComicChapterView.astro";
+import Icon from "@components/Icon.astro";
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
+import type { COMIC_CHAPTER_SUMMARY, COMIC_CHAPTER_VIEW } from "src/structure/comicCollector";
+const l = textTranslatorQ(Astro.url);
+const t = pathTranslatorQ(Astro.url);
+
+interface Props{
+  chapterData: COMIC_CHAPTER_VIEW,
+  id: string,
+  chapters: COMIC_CHAPTER_SUMMARY[],
+  currentChapter: string,
+}
+const { chapterData, id, chapters, currentChapter } = Astro.props;
+
+// Find current chapter index
+const currentIndex = chapters.findIndex((c) => c.chapterId === currentChapter);
+const prevChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
+const nextChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
+---
+<main class="mb-20 mt-5">
+
+  <div class="flex">
+    <a href={t(`/comic/detail/${id}`)} class="btn-outline btn-sm">
+      <Icon name="back" outClass="size-6" /> {l("comic-view.back-to-detail")}
+    </a>
+  </div>
+
+  <div class="my-5">
+    <h1 class="h8">
+      {chapterData.title}
+    </h1>
+  </div>
+
+  <!-- Navigation Top -->
+  <div class="flex justify-between items-center mb-8">
+    {prevChapter ? (
+      <a 
+        href={t(`/comic/read/${id}/${prevChapter.chapterId}`)} 
+        class="btn w-fit"
+      >
+        <Icon name="prev" outClass="size-5" />
+        <span>{l("comic-view.previous")}</span>
+      </a>
+    ) : <div></div>}
+    
+    {nextChapter ? (
+      <a 
+        href={t(`/comic/read/${id}/${nextChapter.chapterId}`)} 
+        class="btn w-fit"
+      >
+        <span>{l("comic-view.next")}</span>
+        <Icon name="next" outClass="size-5" />
+      </a>
+    ) : <div></div>}
+  </div>
+
+  <div class="my-5"></div>
+  <section class="flex justify-center">
+    <ComicChapterView class="w-200 relative" chapterData={chapterData} />
+  </section>
+  <div class="my-5"></div>
+
+
+   <!-- Navigation Bottom -->
+  <div class="flex justify-between items-center mt-10">
+    {prevChapter ? (
+      <a 
+        href={t(`/comic/read/${id}/${prevChapter.chapterId}`)} 
+        class="btn w-fit"
+      >
+        <Icon name="prev" outClass="size-5" />
+        <span>{l("comic-view.previous")}</span>
+      </a>
+    ) : <div></div>}
+    
+    {nextChapter ? (
+      <a 
+        href={t(`/comic/read/${id}/${nextChapter.chapterId}`)} 
+        class="btn w-fit"
+      >
+        <span>{l("comic-view.next")}</span>
+        <Icon name="next" outClass="size-5" />
+      </a>
+    ) : <div></div>}
+  </div>
+
+</main>

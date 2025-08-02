@@ -1,0 +1,48 @@
+---
+import ComicSearch from '@components/ComicComponent/ComicSearch.astro';
+import Listing from '@components/ComicComponent/Listing.astro';
+import Icon from '@components/Icon.astro';
+import { actions } from 'astro:actions';
+import { pathTranslatorQ, textTranslatorQ } from 'src/i18/utils';
+import type {COMIC_SEARCHED_DATA } from 'src/structure/comicCollector';
+
+interface Props{
+  searchQuery?: string,
+}
+const { searchQuery = "" } = Astro.props;
+const l = textTranslatorQ(Astro.url);
+const t = pathTranslatorQ(Astro.url);
+
+
+const { data, error} = await Astro.callAction( actions.comic.search,  searchQuery);
+
+const comics: COMIC_SEARCHED_DATA[] = data || [];
+const pagination: number[] = [1];
+---
+
+<main class="mb-20 mt-5">
+  <div class="flex flex-wrap gap-2 mb-4">
+    <div class="mr-auto">
+      <a href={t("/")} class="btn-outline btn-sm">
+        <Icon name="back" outClass="size-6" />
+        <span>{l("back.to-home")}</span>
+      </a>
+    </div>
+    <div class="sm:basis-auto basis-full sm:mt-0 mt-2"> 
+      <ComicSearch value={searchQuery} />
+    </div>
+  </div>
+  <div class="mb-5">
+    <h1 class="h8">
+      {l("search.you-searched-for")} <span class="font-light italic">{searchQuery}</span>
+    </h1>
+    <p>
+      <small>{l("search.a-total-of")}{comics.length}{l("search.was-found")}</small>
+    </p>
+  </div>
+
+  <hr class="mt-5 mb-10 border-(--color-primary) opacity-40" />
+
+  <Listing pagination={pagination} comics={comics} />
+
+</main>

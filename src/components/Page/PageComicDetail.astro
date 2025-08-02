@@ -1,0 +1,32 @@
+---
+import ComicDetail from "@components/ComicComponent/ComicDetail.astro";
+import ComicSearch from "@components/ComicComponent/ComicSearch.astro";
+import Icon from "@components/Icon.astro";
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
+import type { COMIC_DETAIL } from "src/structure/comicCollector";
+const l = textTranslatorQ(Astro.url);
+const t = pathTranslatorQ(Astro.url);
+
+interface Props{
+  comic: COMIC_DETAIL,
+}
+const { comic } = Astro.props;
+
+---
+<main class="mb-20 mt-5">
+
+  <div class="flex flex-wrap gap-2 mb-4">
+    <div class="mr-auto">
+      <a href={t("/")} class="btn-outline btn-sm">
+        <Icon name="back" outClass="size-6" />
+        <span>{l("back.to-home")}</span>
+      </a>
+    </div>
+    <div class="sm:basis-auto basis-full sm:mt-0 mt-2"> 
+      <ComicSearch />
+    </div>
+  </div>
+  <div class="my-5"></div>
+  <ComicDetail comic={comic} />
+
+</main>

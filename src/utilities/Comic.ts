@@ -17,7 +17,7 @@ export function parseComicId(id: string|null|undefined): COMIC_ID_COLLIDER|null{
     if(!parsed.id || !parsed.type || (parsed.type !== 'MANGA' && parsed.type !== 'MANWHA')){
       return null;
     }
-    return parsed;
+    return parsed; 
   } catch (error){
     return null;
   }
@@ -30,7 +30,10 @@ export function comicConciseDataCollider(manga:MANGA_CONCISE_DATA[]|null, manwha
   if( manga != null){
     for(const data of manga){
       combine.push({
-        id: data.id,
+        id: makeComicId({
+          id: data.id,
+          type: 'MANGA'
+        }),
         title: data.title,
         imageUrl: data.imgUrl,
       })
@@ -40,7 +43,10 @@ export function comicConciseDataCollider(manga:MANGA_CONCISE_DATA[]|null, manwha
   if(manwha != null ){
     for(const data of manwha){
       combine.push({
-        id: data.manwhaId,
+        id: makeComicId({
+          id: data.manwhaId,
+          type: 'MANWHA'
+        }),
         title: data.title,
         imageUrl: data.image,
       })
@@ -53,7 +59,10 @@ export function comicConciseDataCollider(manga:MANGA_CONCISE_DATA[]|null, manwha
 
 export function mangaToComicDetail(manga:MANGA_DETAIL): COMIC_DETAIL {
   const comicData:COMIC_DETAIL = {
-    id: manga.id,
+    id: makeComicId({
+      id: manga.id,
+      type: 'MANGA'
+    }),
     title: manga.title,
     status: manga.status,
     imageUrl: manga.imageUrl,
@@ -73,7 +82,10 @@ export function mangaToComicDetail(manga:MANGA_DETAIL): COMIC_DETAIL {
 
 export function manwhaToComicDetail(manwha:MANWHA_DETAIL, manwhaId = ""): COMIC_DETAIL {
   const comicData:COMIC_DETAIL = {
-    id: manwhaId,
+    id: makeComicId({
+      id: manwhaId,
+      type: 'MANWHA'
+    }),
     title: manwha.title,
     status: manwha.status,
     imageUrl: manwha.image,
@@ -108,7 +120,10 @@ export function manwhaToComicChapterView(chapter:MANWHA_CHAPTER_VIEW): COMIC_CHA
 
 export function mangaToComicSearchedData(manga:MANGA_SEARCHED_DATA): COMIC_SEARCHED_DATA {
   const searchedData:COMIC_SEARCHED_DATA = {
-    id: manga.id,
+    id: makeComicId({
+      id: manga.id,
+      type: 'MANGA'
+    }),
     title: manga.title,
     imageUrl: manga.imgUrl,
   }
@@ -118,14 +133,15 @@ export function mangaToComicSearchedData(manga:MANGA_SEARCHED_DATA): COMIC_SEARC
 
 export function manwhaToComicSearchedData(manwha:MANWHA_SEARCHED_DATA): COMIC_SEARCHED_DATA {
   const searchedData:COMIC_SEARCHED_DATA = {
-    id: manwha.manwhaId,
+    id: makeComicId({
+      id: manwha.manwhaId,
+      type: 'MANWHA'
+    }),
     title: manwha.title,
     imageUrl: manwha.image,
-
   }
   return searchedData;
 }
-
 
 export function comicSearchedCollider(manga:MANGA_SEARCHED_DATA[]|null, manwha:MANWHA_SEARCHED_DATA[]|null){
   const combine: COMIC_SEARCHED_DATA[] = [];

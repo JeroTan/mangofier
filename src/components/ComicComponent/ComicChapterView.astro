@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import type { COMIC_CHAPTER_VIEW } from "src/structure/comicCollector"
+
+interface Props {
+  chapterData: COMIC_CHAPTER_VIEW,
+  class?: string,
+}
+const { chapterData, class:className = "" } = Astro.props;
+---
+<astro-comic-chapter-view class={className}>
+  <!-- Image Reader View -->
+  <div class="space-y-[1px] w-full">
+    {chapterData.imageUrls.map((url, idx) => (
+      <Image 
+        src={url} 
+        alt={`Page ${idx + 1}`} 
+        loading="lazy" 
+        width={500}
+        height={500}
+        class="w-full shadow-md object-contain border border-white/10 hover:shadow-lg transition"
+      />
+    ))}
+  </div>
+</astro-comic-chapter-view>
