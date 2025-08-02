@@ -25,7 +25,7 @@ const { comics, pagination } = Astro.props;
     }) }
     {/** Add Empty Block to make the cards center while the start is left */}
     { [...Array(5)].map(()=>{
-        return <div class="w-64"></div>
+        return <div class="md:w-64 sm:w-36 w-26"></div>
       })
     }
   </div>
