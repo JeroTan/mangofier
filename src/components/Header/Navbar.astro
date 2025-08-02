@@ -88,10 +88,6 @@ import logo from "src/assets/logo.png";
       <Icon name="search" outClass="size-7" />
       <span class="text-xs font-light">{`Explore`}</span>
     </a>
-    <a href={t(`/list`)} class="btn btn-sm btn-ghost flex-col gap-0">
-      <Icon name="nineDots" outClass="size-7" />
-      <span class="text-xs font-light">{`List`}</span>
-    </a>
     <div class={`${isLogin ? "hidden" : ""}`}>
       <a href={t("/authentication/login")} class="btn btn-sm btn-ghost flex-col gap-0">
         <Icon name="person" outClass="size-7" />
@@ -104,6 +100,10 @@ import logo from "src/assets/logo.png";
         <span class="text-xs font-light">{`Profile`}</span>
       </a>
     </div>
+    <a href={"#"} onclick={`document.getElementById("change-language-button").click()`} class="btn btn-sm btn-ghost flex-col gap-0">
+      <Icon name="globe" outClass="size-5" />
+      <span class="text-xs font-light">{`Language`}</span>
+    </a>
   </div>
 </aside>
 
