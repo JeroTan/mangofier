@@ -38,7 +38,7 @@ const nextChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
     {prevChapter ? (
       <a 
         href={t(`/comic/read/${id}/${prevChapter.chapterId}`)} 
-        class="btn w-fit"
+        class="btn btn-sm w-fit"
       >
         <Icon name="prev" outClass="size-5" />
         <span>{l("comic-view.previous")}</span>
@@ -48,7 +48,7 @@ const nextChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
     {nextChapter ? (
       <a 
         href={t(`/comic/read/${id}/${nextChapter.chapterId}`)} 
-        class="btn w-fit"
+        class="btn btn-sm w-fit"
       >
         <span>{l("comic-view.next")}</span>
         <Icon name="next" outClass="size-5" />
@@ -68,7 +68,7 @@ const nextChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
     {prevChapter ? (
       <a 
         href={t(`/comic/read/${id}/${prevChapter.chapterId}`)} 
-        class="btn w-fit"
+        class="btn btn-sm w-fit"
       >
         <Icon name="prev" outClass="size-5" />
         <span>{l("comic-view.previous")}</span>
@@ -78,7 +78,7 @@ const nextChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
     {nextChapter ? (
       <a 
         href={t(`/comic/read/${id}/${nextChapter.chapterId}`)} 
-        class="btn w-fit"
+        class="btn btn-sm w-fit"
       >
         <span>{l("comic-view.next")}</span>
         <Icon name="next" outClass="size-5" />
