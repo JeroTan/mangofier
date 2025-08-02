@@ -46,10 +46,10 @@ import logo from "src/assets/logo.png";
               {`Home`}
             </a>
             <div class={`${isLogin ? "hidden" : ""}`}>
-              <a href={t("/authentication/login")} class="btn btn-ghost w-full text-start justify-start">
+              <a href={t("/auth/login")} class="btn btn-ghost w-full text-start justify-start">
                 {`Login`}
               </a>
-              <a href={t("/authentication/register")} class="btn btn-ghost w-full text-start justify-start">
+              <a href={t("/auth/register")} class="btn btn-ghost w-full text-start justify-start">
                 {`Register`}
               </a>
             </div>
@@ -87,7 +87,7 @@ import logo from "src/assets/logo.png";
       <span class="text-xs font-light">{`Explore`}</span>
     </a>
     <div class={`${isLogin ? "hidden" : ""}`}>
-      <a href={t("/authentication/login")} class="btn btn-sm btn-ghost flex-col gap-0">
+      <a href={t("/auth/login")} class="btn btn-sm btn-ghost flex-col gap-0">
         <Icon name="person" outClass="size-7" />
         <span class="text-xs font-light">{`Login`}</span>
       </a>

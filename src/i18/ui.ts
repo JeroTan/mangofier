@@ -74,6 +74,9 @@ export const ui = {
     "comic-view.next": "Next Chapter",
     "comic-view.back-to-detail": "Back to Detail",
 
+    "auth.no-database-register": "We still don't have a database, so you can't register yet.",
+    "auth.no-database-login": "We still don't have a database, so you can't login yet.",
+    
     "404.title": "404 - Page Not Found",
     "404.subtitle": "Sorry, the page you are looking for does not exist.",
     "404.button": "Go to Home",
@@ -130,6 +133,9 @@ export const ui = {
     "comic-view.previous": "Nakaraang Kabanata",
     "comic-view.next": "Susunod na Kabanata",
     "comic-view.back-to-detail": "Bumalik sa Detalye",
+
+    "auth.no-database-register": "Wala pa po ang database kaya 'wag nalang tayong mag register.",
+    "auth.no-database-login": "Wala pa po ang database kaya 'wag nalang tayong mag login.",
 
     "404.title": "404 - Pahinang 'di Natagpuan",
     "404.subtitle": "Paumanhin, ang pahinang hinahanap mo ay kathang-isip lamang.",

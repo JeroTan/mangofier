@@ -1,0 +1,98 @@
+---
+import Icon from "@components/Icon.astro";
+import PagePlate from "@layouts/PagePlate.astro";
+import { textTranslatorQ } from "src/i18/utils";
+const l = textTranslatorQ(Astro.url);
+---
+
+<PagePlate>
+  <div class="register-container">
+    <div class="message-box">
+      <div class="flex justify-center">
+        <div class="icon-container">
+          <Icon name="wrench" outClass="size-10" class="text-white" />
+        </div>
+      </div>
+      
+      <h1 class="title">{l("auth.no-database-login")}</h1>
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .register-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+    }
+    
+    .message-box {
+      background: linear-gradient(135deg, #326e4b, #338f5c);
+      color: white;
+      border-radius: 1rem;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      max-width: 600px;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .icon-container {
+      margin-bottom: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+    
+    .title {
+      font-size: 2.5rem;
+      margin: 0 0 1rem 0;
+      font-weight: 800;
+      text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .message {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .progress-container {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      height: 10px;
+      width: 100%;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      width: 30%;
+      background: white;
+      border-radius: 9999px;
+      animation: loading 2s infinite ease-in-out;
+    }
+    
+    .check-back {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    @keyframes loading {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(400%); }
+    }
+  </style>
+</PagePlate>
