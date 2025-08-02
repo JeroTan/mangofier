@@ -1,11 +1,11 @@
 @utility input{
   @apply 
   block 
-  rounded-xl
+  rounded-lg
   px-4 py-3 w-full
-  bg-transparent border border-gray-500 
-  text-gray-900 text-sm 
-  enabled:text-gray-900 enabled:bg-transparent
+  bg-transparent border border-(--color-primary) 
+  text-slate-100 text-sm 
+  enabled:text-slate-100 enabled:bg-transparent
   disabled:text-gray-600 disabled:bg-zinc-100
   focus:outline-(--color-primary)
   focus:ring-0 focus:stroke-0
@@ -17,11 +17,11 @@
 @utility input-main{
   @apply 
   block 
-  rounded-xl
+  rounded-lg
   px-3 py-4 w-full rounded-xs
-  bg-transparent border border-gray-500 
-  text-gray-900 text-sm 
-  enabled:text-gray-900 enabled:bg-transparent
+  bg-transparent border border-(--color-primary) 
+  text-slate-100 text-sm 
+  enabled:text-slate-100 enabled:bg-transparent
   disabled:text-gray-600 disabled:bg-zinc-100
   focus:bg-transparent
   focus:outline-(--color-primary)
@@ -44,7 +44,7 @@
 
 /* For Toast UI Editor */
 .toastui-editor-defaultUI{
-  @apply !border-gray-500 !rounded-sm
+  @apply !border-(--color-primary) !rounded-sm
 }
 
 /* For Vanilla-Calendar-Pro */
@@ -80,7 +80,7 @@
   @apply
   block 
   mb-2 
- text-gray-900 
+ text-slate-100 
   font-semibold
   disabled:cursor-not-allowed disabled:text-gray-300
  ;
@@ -113,7 +113,7 @@
   rounded-xs
   cursor-pointer
   text-(--color-primary)
-  border border-gray-500 
+  border border-(--color-primary) 
   focus:ring-(--color-primary-darker)  focus:ring-2 
   disabled:text-gray-600 disabled:bg-zinc-100 disabled:cursor-not-allowed
   ;
@@ -148,7 +148,7 @@
   rounded-full
   cursor-pointer
   text-(--color-primary)
-  border border-gray-500 
+  border border-(--color-primary) 
   focus:ring-(--color-primary-darker)  focus:ring-2 
   disabled:text-gray-600 disabled:bg-zinc-100 disabled:cursor-not-allowed
   ;
@@ -183,7 +183,7 @@
   @apply py-0 px-0 block;
 }
 .file::-webkit-file-upload-button, .file::file-selector-button {
-  @apply mr-4 px-4 py-2 rounded-md rounded-l rounded-r-none border-0 text-sm font-semibold bg-gray-200 cursor-pointer;
+  @apply mr-4 px-4 py-3 rounded-md rounded-l rounded-r-none border-0 text-sm font-semibold bg-gray-200 cursor-pointer;
   border: none;
   margin-right: 0.5rem;
 }

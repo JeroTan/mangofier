@@ -16,8 +16,9 @@ export function api(url: URL, cookies: AstroCookies, addons?:string){
   return http
 }
 
-export function apiF(url: URL, cookies: AstroCookies){
-  const api2 =  api(url, cookies, "/frontstore");
+export function api2(url: URL, cookies: AstroCookies){
+  const api2 =  api(url, cookies);
+  api2.setBaseURL(`${import.meta.env.SECRET_MANWHA_API_URL||url.origin}`);
   return api2
 }
 
@@ -143,4 +144,9 @@ export function getSearch(url: URL){
   }catch{
     return "";
   }
+}
+
+
+export function checkIfAllResponseAreNotOk(responses: Response[]){
+  return responses.every(response => response.status !== 200 && response.status !== 201);
 }

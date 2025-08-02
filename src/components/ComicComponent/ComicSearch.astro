@@ -1,0 +1,52 @@
+---
+import Input from "@components/Form/Input.astro";
+import Icon from "@components/Icon.astro";
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
+const t = pathTranslatorQ(Astro.url);
+const l = textTranslatorQ(Astro.url);
+---
+
+<astro-comic-search>
+  <div class="flex items-center gap-1">
+    <Input id="search-input" placeholder={l(`search.placeholder`)} />
+    <button id="search-button" class="btn btn-primary ">
+      <Icon name="search" outClass="size-6" />
+    </button>
+  </div>
+</astro-comic-search>
+<script>
+//---> Import
+
+import { ElementMaker } from "@jsarmyknife/native--dom";
+import { NotifPop } from "@jsarmyknife/native--pop";
+import { pathTranslator, textTranslator } from "src/scripts/Link";
+import { encodeLite } from "src/utilities/Parser";
+const t = pathTranslator();
+const l = textTranslator();
+
+ElementMaker("astro-comic-search", (element)=>{
+//---> Const
+const searchInput = element.querySelector("#search-input") as HTMLInputElement;
+const searchButton = element.querySelector("#search-button") as HTMLButtonElement;
+
+//---> Event Listeners
+searchInput.addEventListener("keydown", (event)=>{
+  if(event.key === "Enter"){
+    event.preventDefault();
+    searchButton.click();
+  }
+});
+searchButton.addEventListener("click", ()=>{
+  if(searchInput.value === ""){
+    new NotifPop().add({
+      title: l("search.no-search-term-title"),
+      message: l("search.no-search-term-subtitle"),
+      autoClose:5000,
+    })
+    return;
+  }
+  location.href = t(`/search/${encodeLite(searchInput.value)}`);
+});
+
+} ,true);
+</script>

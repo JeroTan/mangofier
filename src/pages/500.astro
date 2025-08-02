@@ -1,0 +1,20 @@
+---
+import PagePlate from "@layouts/PagePlate.astro";
+import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
+const t = pathTranslatorQ(Astro.url);
+const l = textTranslatorQ(Astro.url);
+interface Props {
+	error: unknown
+}
+const { error } = Astro.props; // This is use to received Error
+---
+
+<PagePlate title={l("500.title")}>
+  <main class="flex flex-col items-center justify-center h-screen text-center">
+    <h1 class="text-4xl font-bold mb-4">{l("500.title")}</h1>
+    <p class="text-lg mb-6">{l("500.subtitle")}</p>
+    <p class="text-red-500 mb-6">{error instanceof Error ? error.message : "An unexpected error occurred."}</p>
+    <a href={t("/")} class="btn btn-primary">{l("500.button")}</a>
+  </main>
+</PagePlate>
+

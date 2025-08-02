@@ -1,22 +1,22 @@
 import { z } from "astro/zod";
 import { defineAction } from "astro:actions";
-import type { MANGA_CHAPTER_VIEW, MANGA_CONCISE_DATA, MANGA_DETAIL, MANGA_SEARCH_LIST } from "src/structure/manga";
-import { api, checkApiErrorAction } from "src/utilities/Api";
+import type { MANWHA_CHAPTER_VIEW, MANWHA_CONCISE_DATA, MANWHA_DETAIL, MANWHA_SEARCHED_DATA } from "src/structure/manwha";
+import { api2, checkApiErrorAction } from "src/utilities/Api";
 
 
-export const manga = {
+export const manwha = {
   list: defineAction({
     input: z.number().optional().default(1),
     async handler(input, ctx){
       //Prepare Api
-      const response = await api(ctx.url, ctx.cookies).path(`/manga-list/${input}`).get().request();
+      const response = await api2(ctx.url, ctx.cookies).path(`/manwha/home/${input}?mature=0`).get().request();
       
       //Api Check Error
       await checkApiErrorAction(response);
 
       return await response.json() as {
         pagination: number[],
-        data: MANGA_CONCISE_DATA[],
+        data: MANWHA_CONCISE_DATA[],
       }
     }
   }),
@@ -24,12 +24,14 @@ export const manga = {
     input: z.string(),
     async handler(input, ctx){
       //Prepare Api
-      const response = await api(ctx.url, ctx.cookies).path(`/manga/${input}`).get().request();
+      const response = await api2(ctx.url, ctx.cookies).path(`/manwha/${input}`).get().request();
 
       //Api Check Error
       await checkApiErrorAction(response);
 
-      return await response.json() as MANGA_DETAIL;
+      return await response.json() as {
+        data: MANWHA_DETAIL,
+      };
     }
   }),
   chapterView: defineAction({
@@ -39,24 +41,28 @@ export const manga = {
     }),
     async handler(input, ctx){
       //Prepare Api
-      const response = await api(ctx.url, ctx.cookies).path(`/manga/${input.id}/${input.chapter}`).get().request();
+      const response = await api2(ctx.url, ctx.cookies).path(`/manwha/${input.id}/${input.chapter}`).get().request();
 
       //Api Check Error
       await checkApiErrorAction(response);
 
-      return await response.json() as MANGA_CHAPTER_VIEW;
+      return await response.json() as {
+        data: MANWHA_CHAPTER_VIEW
+      }
     }
   }),
   search: defineAction({
     input: z.string(),
     async handler(input, ctx){
       //Prepare Api
-      const response = await api(ctx.url, ctx.cookies).path(`/search/${input}`).get().request();
+      const response = await api2(ctx.url, ctx.cookies).path(`/search/${input}`).get().request();
 
       //Api Check Error
       await checkApiErrorAction(response);
 
-      return await response.json() as MANGA_SEARCH_LIST;
+      return await response.json() as {
+        data: MANWHA_SEARCHED_DATA[],
+      };
     }
   })
 }

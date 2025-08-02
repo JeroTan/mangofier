@@ -1,0 +1,47 @@
+---
+import { actions } from 'astro:actions'
+import type { COMIC_CONCISE_DATA } from 'src/structure/comicCollector'
+import { getPage } from 'src/utilities/Api'
+import ComicCard from './ComicCard.astro';
+import Pagination from '@components/Interactive/Pagination.astro';
+import { textTranslatorQ } from 'src/i18/utils';
+
+const l = textTranslatorQ(Astro.url);
+
+const page = getPage(Astro.url)
+
+// const { data, error} = await Astro.callAction( actions.comic.list,  page);
+
+// const comics: COMIC_CONCISE_DATA[] = data?.data || [];
+// const pagination: number[] = data?.pagination || [];
+
+const comics: COMIC_CONCISE_DATA[] = [];
+const pagination: number[] = [1];
+
+---
+<astro-listing>
+  <div class="flex flex-wrap lg:gap-10 md:gap-8 sm:gap-6 gap-4 justify-center">
+    { comics.map((comic)=>{
+      return <ComicCard comic={comic} />
+    }) }
+    {/** Add Empty Block to make the cards center while the start is left */}
+    { [...Array(5)].map(()=>{
+        return <div class="w-64"></div>
+      })
+    }
+  </div>
+
+  <div class={` ${comics.length > 0 ? "hidden" : ""} text-center`}>
+    <h2 class="text-2xl font-bold">
+      { l("listing.no-data")}
+    </h2>
+    <p class="text-lg">
+      { l("listing.no-data-try-searching")} <br/>
+      <span class="text-sm">{ l("listing.no-data-theory") }</span>
+    </p>
+  </div>
+
+  <div class="my-10">
+    <Pagination currentPage={page} totalPages={pagination.length > 0 ? pagination[pagination.length - 1] : 1} />
+  </div>
+</astro-listing>

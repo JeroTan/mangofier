@@ -1,12 +1,6 @@
 ---
 import { pathTranslatorQ, textTranslatorQ } from "src/i18/utils";
 
-// Footer
-const websiteURL: string = import.meta.env.SITE;
-const brandName: string = import.meta.env.BRAND_NAME;
-const companyName: string = import.meta.env.COMPANY_NAME;
-
-const currentYear: number = new Date().getFullYear();
 const t = pathTranslatorQ(Astro.url);
 const l = textTranslatorQ(Astro.url);
 ---
@@ -14,16 +8,16 @@ const l = textTranslatorQ(Astro.url);
 <footer class="bg-slate-900 py-12" itemscope itemtype="https://schema.org/WPFooter">
   <div class="container mx-auto px-4 sm:px-6">
     <div class="flex flex-wrap gap-6 mb-4">
-      <a href={t("/faq")} class="btn-outline btn-sm">FAQ</a>
-      <a href={t("/about")} class="btn-outline btn-sm">About</a>
-      <a href={t("/cookie")} class="btn-outline btn-sm">Cookie Policy</a>
+      <a href={t("/information/faq")} class="btn-outline btn-sm">FAQ</a>
+      <a href={t("/information/about-us")} class="btn-outline btn-sm">About</a>
+      <a href={t("/legal/cookie-policy")} class="btn-outline btn-sm">Cookie Policy</a>
     </div>
 
-    <p class=" mb-2">
-      <strong>ManGoFier</strong> is a personal UI project for reading manga/manhwa like Webtoon. This website is 100% free to use.
+    <p class=" mb-2" set:html={l("footer.title")}>
+      
     </p>
     <p class="">
-      We do not host or store any manga content on our servers. All data and images are provided by third-party APIs. Any copyright or piracy issues are the responsibility of the API provider.
+      {l("footer.subtitle")}
     </p>
   </div>
 </footer>

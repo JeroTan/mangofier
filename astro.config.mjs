@@ -22,6 +22,7 @@ export default defineConfig({
   env: {
     schema: {
       SECRET_MANGA_API_URL: envField.string({ context: "server", access: "secret", default: "abc.com" }),
+      SECRET_MANWHA_API_URL: envField.string({ context: "server", access: "secret", default: "abc.com" }),
     },
   },
   output: "server",
@@ -44,6 +45,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     define: {
       'process.env.SECRET_MANGA_API_URL':JSON.stringify(process.env.SECRET_MANGA_API_URL),
+      'process.env.SECRET_MANWHA_API_URL':JSON.stringify(process.env.SECRET_MANWHA_API_URL),
     }
   },
   i18n: {

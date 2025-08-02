@@ -1,0 +1,20 @@
+---
+import ComicSearch from "@components/ComicComponent/ComicSearch.astro";
+import Listing from "@components/ComicComponent/Listing.astro";
+import { textTranslatorQ } from "src/i18/utils";
+const l = textTranslatorQ(Astro.url);
+---
+
+<main class="mb-20 mt-10">
+  <div class="mb-5">
+    <h1 class="h8">
+      {l("home.title")}
+    </h1>
+    <p>
+      <small>{l("home.subtitle")}</small>
+    </p>
+  </div>
+  <ComicSearch />
+  <div class="my-10"></div>
+  <Listing />
+</main>

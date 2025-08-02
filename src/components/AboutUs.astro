@@ -5,26 +5,25 @@ const l = textTranslatorQ(Astro.url);
 
 
 <main class="space-y-6">
-  <h1 class="text-3xl font-bold">{ `About ManGoFier` }</h1>
+  <h1 class="text-3xl font-bold">{ l("about.title") }</h1>
 
-  <p class="text-base text-gray-700">
-    { `Mangofier is a all-in-one manga, manhwa, and webtoon reader that provides a seamless experience for users to explore and enjoy their favorite stories.` }
+  <p class="text-base text-gray-200">
+    { l("about.subtitle") }
   </p>
 
   <section class="space-y-4">
-    <h2 class="text-xl font-semibold">{ `Our Mission` }</h2>
-    <p class="text-sm text-gray-700">
-      { `To provide a comprehensive platform for manga, manhwa, and webtoon enthusiasts to discover, read, and share their favorite stories.` }
+    <h2 class="text-xl font-semibold">{ l("about.title2") }</h2>
+    <p class="text-sm text-gray-200">
+      { l("about.subtitle2") }
     </p>
 
-    <h2 class="text-xl font-semibold">{ `Why Choose Us?` }</h2>
-    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-      <li>{ `We offer a vast library of titles from various genres and languages.` }</li>
-      <li>{ `Our user-friendly interface makes it easy to find and read your favorite stories.` }</li>
-      <li>{ `We prioritize user feedback and continuously improve our platform.` }</li>
-      <li>{ `AND IT'S FREE! For now of course 😉`}</li>
+    <h2 class="text-xl font-semibold">{ l("about.title3") }</h2>
+    <ul class="list-disc list-inside text-sm text-gray-200 space-y-1">
+      <li>{ l("about.subtitle3.1") }</li>
+      <li>{ l("about.subtitle3.2") }</li>
+      <li>{ l("about.subtitle3.3") }</li>
     </ul>
   </section>
 
-  <p class="text-sm text-gray-500">{ `Join us on this exciting journey and let's explore the world of manga together!` }</p>
+  <p class="text-sm text-gray-500">{ l("about.join-us") }</p>
 </main>
