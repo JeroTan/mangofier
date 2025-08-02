@@ -14,9 +14,9 @@ const l = textTranslatorQ(Astro.url);
 const t = pathTranslatorQ(Astro.url);
 
 
-const { data, error} = await Astro.callAction( actions.comic.search,  searchQuery);
+const { data, error } = await Astro.callAction( actions.comic.search,  searchQuery);
 
-const comics: COMIC_SEARCHED_DATA[] = data || [];
+const comics: COMIC_SEARCHED_DATA[] = error ? [] : (data || []);
 const pagination: number[] = [1];
 ---
 

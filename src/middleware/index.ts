@@ -2,9 +2,9 @@
 import type { APIContext, MiddlewareNext } from "astro";
 import { Middleware } from "./middleware";
 import { sequence } from "astro:middleware";
-import { BlockWhenAuth } from "./auth/BlockWhenAuth";
-import { BlockWhenNotAuth } from "./auth/BlockWhenNotAuth";
-import { getLangFromUrl, pathTranslatorQ } from "src/i18/utils";
+// import { BlockWhenAuth } from "./auth/BlockWhenAuth";
+// import { BlockWhenNotAuth } from "./auth/BlockWhenNotAuth";
+import { pathTranslatorQ } from "src/i18/utils";
 
 
 type ASTRO_CONTEXT = APIContext<Record<string, any>, Record<string, string | undefined>>

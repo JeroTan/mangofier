@@ -6,7 +6,7 @@ interface Props {
 }
 const {
   baseUrl = Astro.url.origin,
-  description = "Nana Pool Villa is a luxurious retreat offering private pool villas in the heart of the city. Experience unparalleled comfort and relaxation with top-notch amenities and personalized service.",
+  description = "ManGoFier - Your Ultimate Manga and Comic Reader",
 } = Astro.props;
 
 const path = Astro.url.pathname;
@@ -19,8 +19,8 @@ function isPage(conditionPath:string){
 ---
 
 <meta property="og:type" content={`${isPage("/newsroom") ? "article" : "website"}`} />
-<meta property="og:site_name" content="Nana Pool Villa" />
+<meta property="og:site_name" content="ManGoFier" />
 <meta property="og:url" content={`${baseUrl}${Astro.url.pathname}`}>
 <meta property="og:description" content={description}>
-<meta property="og:image" content={`${baseUrl}images/nana-pool-villa.png`}>
+<meta property="og:image" content={`${baseUrl}images/logo.png`}>
 <meta property="og:locale" content="en_US" />

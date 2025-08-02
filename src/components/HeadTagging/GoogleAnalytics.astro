@@ -1,8 +1,8 @@
 ---
-const AllowedCookiesData = Astro.cookies.has("NPV_ALLOW_COOKIES");
+const AllowedCookiesData = Astro.cookies.has("MGF_ALLOW_COOKIES");
 let isAllowed = true;
 if(AllowedCookiesData){
-  if(Astro.cookies.get("NPV_ALLOW_COOKIES")!.value == "true"){
+  if(Astro.cookies.get("MGF_ALLOW_COOKIES")!.value == "true"){
     isAllowed = true;
   }else{
     isAllowed = false;

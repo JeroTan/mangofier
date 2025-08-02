@@ -25,7 +25,7 @@ export interface OTP_RESPONSE {
 }
 
 
-export interface LOGIN_CUSTOMER_DETAILS {
+export interface LOGIN_USER_DETAILS {
   id: string,
   firstName: string,
   lastName: string,
